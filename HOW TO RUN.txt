@@ -1,0 +1,64 @@
+LUCAS HEALTH TECH — VERSION 2
+=============================
+
+This folder is a complete, standalone website. Version 1 is untouched in the
+folder above it.
+
+
+1. INSTALL (first time only)
+----------------------------
+Open a terminal in this folder and run:
+
+    npm install
+
+Requires Node.js 20 or newer. Download it from https://nodejs.org if needed.
+
+NOTE: this folder currently has a "node_modules" link pointing at Version 1's
+dependencies so the build could be verified. If you move this folder somewhere
+else, delete "node_modules" and run "npm install" to get its own copy.
+
+
+2. VIEW IT WHILE WORKING
+------------------------
+    npm run dev
+
+Then open http://localhost:5173 in a browser. Edits appear instantly.
+
+
+3. BUILD FOR PRODUCTION
+-----------------------
+    npm run build
+
+The finished site is written to the "dist" folder. To check it locally first:
+
+    npm run preview
+
+
+4. DEPLOY
+---------
+Upload the contents of "dist" to any static host.
+
+  - Vercel      : vercel.json is already included
+  - Netlify     : public/_redirects is already included
+  - Render      : Build command  ->  npm run build
+                  Publish dir    ->  dist
+
+The site is a single-page app, so the host must serve index.html for unknown
+paths. The two files above already do that for Vercel and Netlify.
+
+
+5. WHERE TO CHANGE THINGS
+-------------------------
+All wording lives in src/data/ — not inside the components.
+
+  Homepage headline and CTA copy .... src/data/company.ts  (positioningV2)
+  The three homepage numbers ........ src/data/company.ts  (homeMetrics)
+  The five capabilities ............. src/data/solutions.ts
+  The four audience groups .......... src/data/industries.ts
+  Case studies ...................... src/data/engagements.ts
+  Testimonials ...................... src/data/testimonials.ts
+  Articles .......................... src/data/insights.ts
+  Colours and typography ............ src/styles/index.css  (@theme block)
+
+The homepage is deliberately short. If something needs more than one line of
+explanation, it belongs on an inner page, not on the homepage.
