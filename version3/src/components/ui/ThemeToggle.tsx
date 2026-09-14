@@ -1,7 +1,7 @@
 import { Sun, Moon } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useTheme, type Theme } from '../../hooks/useTheme'
-import { useI18n } from '../../i18n/context'
+import { useI18n } from '../../i18n/useI18n'
 import { cn } from '../../utils/cn'
 
 const OPTIONS: { value: Theme; Icon: typeof Sun }[] = [

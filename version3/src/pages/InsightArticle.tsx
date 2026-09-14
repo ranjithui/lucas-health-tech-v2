@@ -2,10 +2,10 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowUpRight, Clock } from 'lucide-react'
 import { Seo } from '../components/seo/Seo'
 import { useTheme } from '../hooks/useTheme'
+import { useI18n } from '../i18n/useI18n'
 import { cn } from '../utils/cn'
 import { Section } from '../components/ui/Primitives'
 import { Button } from '../components/ui/Button'
-import { insights } from '../data/insights'
 import { company } from '../data/company'
 import { readingTime, formatDate } from '../utils/format'
 import { EditorialArt } from './Insights'
@@ -34,12 +34,14 @@ export default function InsightArticle() {
   const { slug } = useParams()
   /* Called before the early return below — hooks cannot sit after it. */
   const dark = useTheme().theme === 'dark'
-  const article = insights.find((i) => i.slug === slug)
+  const { ui, content, t, dateLocale } = useI18n()
+  const p = ui.pages.article
+  const article = content.insights.find((i) => i.slug === slug)
   if (!article) return <Navigate to="/404" replace />
 
-  const related = insights
+  const related = content.insights
     .filter((i) => i.slug !== article.slug)
-    .map((i) => ({ i, score: i.tags.filter((t) => article.tags.includes(t)).length + (i.category === article.category ? 1 : 0) }))
+    .map((i) => ({ i, score: i.tags.filter((x) => article.tags.includes(x)).length + (i.category === article.category ? 1 : 0) }))
     .sort((a, b) => b.score - a.score)
     .slice(0, 3)
     .map((x) => x.i)
@@ -62,39 +64,25 @@ export default function InsightArticle() {
         }}
       />
       <article>
-        <header
-          className={cn(
-            'relative overflow-hidden pb-16 pt-36 md:pb-24 md:pt-44',
-            dark ? 'bg-ink-900 text-white' : 'bg-mist-100 text-text',
-          )}
-        >
+        <header className={cn('relative overflow-hidden pb-16 pt-36 md:pb-24 md:pt-44', dark ? 'bg-ink-900 text-white' : 'bg-mist-100 text-text')}>
           <div className={cn('absolute inset-0', dark ? 'opacity-60' : 'opacity-20')}>
             <EditorialArt seed={article.slug.length % 5} />
           </div>
-          <div
-            aria-hidden
-            className={cn(
-              'absolute inset-0 bg-gradient-to-r',
-              dark ? 'from-ink-900 via-ink-900/85 to-ink-900/40' : 'from-mist-100 via-mist-100/92 to-mist-100/75',
-            )}
-          />
+          <div aria-hidden className={cn('absolute inset-0 bg-gradient-to-r', dark ? 'from-ink-900 via-ink-900/85 to-ink-900/40' : 'from-mist-100 via-mist-100/92 to-mist-100/75')} />
           <div className="container-x relative">
-            <Link
-              to="/insights"
-              className={cn('inline-flex items-center gap-2 text-sm transition', dark ? 'text-white/70 hover:text-white' : 'text-muted hover:text-text')}
-            >
-              <ArrowLeft className="h-4 w-4" aria-hidden /> All insights
+            <Link to="/insights" className={cn('inline-flex items-center gap-2 text-sm transition', dark ? 'text-white/70 hover:text-white' : 'text-muted hover:text-text')}>
+              <ArrowLeft className="h-4 w-4" aria-hidden /> {p.back}
             </Link>
-            <div className={cn('mt-8', dark ? 'eyebrow-dark' : 'eyebrow')}>{article.category}</div>
+            <div className={cn('mt-8', dark ? 'eyebrow-dark' : 'eyebrow')}>{ui.categories[article.category]}</div>
             <h1 className="display-lg mt-4 max-w-4xl text-balance">{article.title}</h1>
             <p className={cn('mt-5 max-w-2xl text-lg', dark ? 'text-muted-dark' : 'text-muted')}>{article.excerpt}</p>
             <div className={cn('mt-8 flex flex-wrap items-center gap-4 text-xs', dark ? 'text-white/60' : 'text-muted')}>
-              <span>By {company.name}</span>
+              <span>{t(p.by, { name: company.name })}</span>
               <span>·</span>
-              <time dateTime={article.date}>{formatDate(article.date)}</time>
+              <time dateTime={article.date}>{formatDate(article.date, dateLocale)}</time>
               <span>·</span>
               <span className="inline-flex items-center gap-1">
-                <Clock className="h-3.5 w-3.5" aria-hidden /> {readingTime(article.body)} min read
+                <Clock className="h-3.5 w-3.5" aria-hidden /> {t(ui.common.minRead, { n: readingTime(article.body) })}
               </span>
             </div>
           </div>
@@ -105,20 +93,20 @@ export default function InsightArticle() {
             <div className="prose-lht max-w-3xl">{renderBody(article.body)}</div>
             <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
               <div className="rounded-2xl border border-paper-300 bg-surface p-6 shadow-soft">
-                <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Topics</div>
+                <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{p.topics}</div>
                 <div className="mt-3 flex flex-wrap gap-1.5">
-                  {article.tags.map((t) => (
-                    <Link key={t} to={`/insights?q=${encodeURIComponent(t)}`} className="rounded-full bg-paper-100 px-2.5 py-1 font-mono text-[11px] text-muted transition hover:bg-accent-500/15 hover:text-accent-700">
-                      {t}
+                  {article.tags.map((tag) => (
+                    <Link key={tag} to={`/insights?q=${encodeURIComponent(tag)}`} className="rounded-full bg-paper-100 px-2.5 py-1 font-mono text-[11px] text-muted transition hover:bg-accent-500/15 hover:text-accent-700">
+                      {tag}
                     </Link>
                   ))}
                 </div>
               </div>
               <div className="rounded-2xl bg-ink-900 p-6 text-white">
-                <div className="eyebrow-dark">Talk to an expert</div>
-                <p className="mt-3 text-sm text-muted-dark">Discuss how this applies to your organization.</p>
+                <div className="eyebrow-dark">{p.talk}</div>
+                <p className="mt-3 text-sm text-muted-dark">{p.talkBody}</p>
                 <Button to="/contact?intent=consultation" size="sm" icon variant="inverse" className="mt-4">
-                  Start a conversation
+                  {ui.common.startConversation}
                 </Button>
               </div>
             </aside>
@@ -128,18 +116,18 @@ export default function InsightArticle() {
         {related.length > 0 && (
           <Section className="bg-paper-200 pt-0">
             <div className="container-x">
-              <h2 className="display-md text-text">Related insights</h2>
+              <h2 className="display-md text-text">{p.related}</h2>
               <div className="mt-8 grid gap-5 md:grid-cols-3">
                 {related.map((r) => (
                   <article key={r.slug} className="group relative rounded-2xl border border-paper-300 bg-surface p-6 shadow-soft transition-all duration-500 hover:-translate-y-0.5 hover:shadow-lift">
-                    <span className="eyebrow">{r.category}</span>
+                    <span className="eyebrow">{ui.categories[r.category]}</span>
                     <h3 className="mt-2 font-display text-lg font-medium leading-snug text-text">
                       <Link to={`/insights/${r.slug}`} className="after:absolute after:inset-0">
                         {r.title}
                       </Link>
                     </h3>
                     <div className="mt-4 flex items-center justify-between text-xs text-muted">
-                      <span>{readingTime(r.body)} min read</span>
+                      <span>{t(ui.common.minRead, { n: readingTime(r.body) })}</span>
                       <ArrowUpRight className="h-4 w-4 text-accent-600" aria-hidden />
                     </div>
                   </article>

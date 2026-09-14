@@ -4,7 +4,7 @@ import { Pause, Play, ChevronDown } from 'lucide-react'
 import { Button } from '../../components/ui/Button'
 import { stagger, wordReveal, fadeUp } from '../../animations/variants'
 import { usePrefersReducedMotion, useLowPower, useIsMobile } from '../../hooks/useMediaQuery'
-import { useI18n } from '../../i18n/context'
+import { useI18n } from '../../i18n/useI18n'
 import { cn } from '../../utils/cn'
 
 /**
@@ -14,7 +14,7 @@ import { cn } from '../../utils/cn'
  * served from the site itself — no third-party player, no tracking. Two
  * encodes: 540p for desktop, 360p for phones and save-data connections.
  * Under reduced motion or on low-power devices the video never starts and the
- * poster gradient carries the section instead.
+ * poster frame carries the section instead; the play button still works.
  *
  * The ground is always navy, in both themes — video reads best under a dark
  * wash — so the header knows to start with light type on this route.
@@ -23,6 +23,8 @@ const SOURCES = {
   desktop: '/video/hero-doctor-tablet-540.mp4',
   mobile: '/video/hero-doctor-tablet-360.mp4',
 } as const
+/** A frame from the clip itself: shown before decode and whenever autoplay is off. */
+const POSTER = '/video/hero-poster.jpg'
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null)
@@ -79,10 +81,16 @@ export function Hero() {
           muted
           loop
           playsInline
+          autoPlay={autoplay}
+          poster={POSTER}
           preload={autoplay ? 'auto' : 'metadata'}
-          onLoadedData={() => setReady(true)}
+          onLoadedData={(e) => {
+            setReady(true)
+            /* The source can change between encodes after mount; (re)start here, once frames exist. */
+            if (autoplay) e.currentTarget.play().catch(() => {})
+          }}
           aria-label={ui.hero.videoLabel}
-          className={cn('absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-out', ready && (playing || !autoplay) ? 'opacity-100' : 'opacity-0')}
+          className={cn('absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-out', ready || !autoplay ? 'opacity-100' : 'opacity-0')}
           src={mobile ? SOURCES.mobile : SOURCES.desktop}
         />
       </motion.div>

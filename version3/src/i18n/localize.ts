@@ -39,7 +39,8 @@ export interface LocalizedContent {
   getIndustry: (id: string) => Industry | undefined
 }
 
-const withDecimals = <T extends { decimals?: number }>(m: T) => ('decimals' in m && m.decimals !== undefined ? { decimals: m.decimals } : {})
+/** Only the 2.1M figure carries decimals; the `as const` data leaves the key off the others. */
+const withDecimals = (m: object) => ('decimals' in m && typeof m.decimals === 'number' ? { decimals: m.decimals } : {})
 
 /** The English base, built once. */
 export const englishContent: LocalizedContent = {

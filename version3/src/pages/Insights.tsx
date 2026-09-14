@@ -5,41 +5,45 @@ import { Clock, Search, X } from 'lucide-react'
 import { Seo } from '../components/seo/Seo'
 import { PageHero } from '../sections/PageHero'
 import { Section } from '../components/ui/Primitives'
-import { insights, insightCategories, type InsightCategory } from '../data/insights'
+import { insightCategories, type InsightCategory } from '../data/insights'
+import { useI18n } from '../i18n/useI18n'
 import { readingTime, formatDate } from '../utils/format'
 import { cn } from '../utils/cn'
 
 export default function Insights() {
   const [params, setParams] = useSearchParams()
   const [q, setQ] = useState(params.get('q') ?? '')
+  const { ui, content, t, dateLocale } = useI18n()
+  const p = ui.pages.insights
+  const { insights } = content
   const cat = (params.get('category') as InsightCategory | null) ?? null
 
   const setCat = (c: InsightCategory | null) => {
-    const p = new URLSearchParams(params)
-    if (c) p.set('category', c)
-    else p.delete('category')
-    setParams(p, { replace: true })
+    const next = new URLSearchParams(params)
+    if (c) next.set('category', c)
+    else next.delete('category')
+    setParams(next, { replace: true })
   }
 
   const filtered = useMemo(() => {
-    const t = q.trim().toLowerCase()
+    const term = q.trim().toLowerCase()
     return insights
       .filter((i) => !cat || i.category === cat)
-      .filter((i) => !t || [i.title, i.excerpt, i.tags.join(' '), i.category].join(' ').toLowerCase().includes(t))
+      .filter((i) => !term || [i.title, i.excerpt, i.tags.join(' '), i.category, ui.categories[i.category]].join(' ').toLowerCase().includes(term))
       .sort((a, b) => b.date.localeCompare(a.date))
-  }, [q, cat])
+  }, [q, cat, insights, ui])
 
   const featured = !q && !cat ? insights.find((i) => i.featured) : undefined
   const list = featured ? filtered.filter((i) => i.slug !== featured.slug) : filtered
-  const counts = useMemo(() => Object.fromEntries(insightCategories.map((c) => [c, insights.filter((i) => i.category === c).length])), [])
+  const counts = useMemo(() => Object.fromEntries(insightCategories.map((c) => [c, insights.filter((i) => i.category === c).length])), [insights])
 
   return (
     <>
-      <Seo title="Insights" description="Articles, industry insights, healthcare technology perspectives, and engagement case studies from Lucas Health Tech." />
-      <PageHero eyebrow="Insights" title="A knowledge hub for healthcare technology leaders." lead="Perspectives on clinical governance, FHIR-native architecture, automation, and executive operations.">
+      <Seo title={p.seoTitle} description={p.seoDescription} />
+      <PageHero eyebrow={p.eyebrow} title={p.title} lead={p.lead}>
         <form role="search" onSubmit={(e) => e.preventDefault()} className="relative max-w-xl">
           <label htmlFor="insights-search" className="sr-only">
-            Search insights
+            {p.search}
           </label>
           <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden />
           <input
@@ -47,11 +51,11 @@ export default function Insights() {
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search articles, topics, technologies…"
+            placeholder={p.placeholder}
             className="h-13 w-full rounded-full border border-paper-300 bg-surface py-3.5 pl-11 pr-11 text-[15px] text-text shadow-soft outline-none transition placeholder:text-muted focus:border-accent-500"
           />
           {q && (
-            <button type="button" onClick={() => setQ('')} aria-label="Clear search" className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-muted hover:text-text">
+            <button type="button" onClick={() => setQ('')} aria-label={p.clear} className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-muted hover:text-text">
               <X className="h-4 w-4" />
             </button>
           )}
@@ -61,22 +65,29 @@ export default function Insights() {
       <Section className="pt-10 md:pt-14">
         <div className="container-x">
           {/* Category filter */}
-          <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by category">
+          <div className="flex flex-wrap gap-2" role="group" aria-label={p.filter}>
             <FilterChip on={!cat} onClick={() => setCat(null)}>
-              All <span className="ml-1 opacity-60">{insights.length}</span>
+              {p.all} <span className="ml-1 opacity-60">{insights.length}</span>
             </FilterChip>
             {insightCategories.map((c) => (
               <FilterChip key={c} on={cat === c} onClick={() => setCat(cat === c ? null : c)} disabled={counts[c] === 0}>
-                {c} <span className="ml-1 opacity-60">{counts[c]}</span>
+                {ui.categories[c]} <span className="ml-1 opacity-60">{counts[c]}</span>
               </FilterChip>
             ))}
           </div>
 
           {featured && (
-            <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="group relative mt-10 grid overflow-hidden rounded-2xl border border-white/10 bg-ink-900 text-white shadow-lift lg:grid-cols-[1.2fr_1fr]">
+            <motion.article
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="group relative mt-10 grid overflow-hidden rounded-2xl border border-white/10 bg-ink-900 text-white shadow-lift lg:grid-cols-[1.2fr_1fr]"
+            >
               <div className="relative p-8 sm:p-12">
                 <div aria-hidden className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-accent-500/20 blur-3xl" />
-                <span className="eyebrow-dark relative">Featured · {featured.category}</span>
+                <span className="eyebrow-dark relative">
+                  {p.featured} · {ui.categories[featured.category]}
+                </span>
                 <h2 className="relative mt-4 font-display text-3xl leading-tight text-balance sm:text-4xl">
                   <Link to={`/insights/${featured.slug}`} className="after:absolute after:inset-0">
                     {featured.title}
@@ -105,8 +116,8 @@ export default function Insights() {
                   className="group relative grid gap-4 border-b border-paper-300 py-8 md:grid-cols-[160px_1fr_200px] md:items-start md:gap-8"
                 >
                   <div className="text-xs text-muted">
-                    <span className="eyebrow block">{i.category}</span>
-                    <span className="mt-2 block">{formatDate(i.date)}</span>
+                    <span className="eyebrow block">{ui.categories[i.category]}</span>
+                    <span className="mt-2 block">{formatDate(i.date, dateLocale)}</span>
                   </div>
                   <div>
                     <h2 className="font-display text-xl font-medium leading-snug text-text transition group-hover:text-accent-700 sm:text-2xl">
@@ -116,22 +127,22 @@ export default function Insights() {
                     </h2>
                     <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-muted">{i.excerpt}</p>
                     <div className="mt-3 flex flex-wrap gap-1.5">
-                      {i.tags.map((t) => (
-                        <span key={t} className="rounded-full bg-paper-200 px-2.5 py-0.5 font-mono text-[10.5px] text-muted">
-                          {t}
+                      {i.tags.map((tag) => (
+                        <span key={tag} className="rounded-full bg-paper-200 px-2.5 py-0.5 font-mono text-[10.5px] text-muted">
+                          {tag}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-muted md:justify-end">
-                    <Clock className="h-3.5 w-3.5" aria-hidden /> {readingTime(i.body)} min read
+                    <Clock className="h-3.5 w-3.5" aria-hidden /> {t(ui.common.minRead, { n: readingTime(i.body) })}
                   </div>
                 </motion.article>
               ))}
             </AnimatePresence>
             {list.length === 0 && !featured && (
               <p className="py-16 text-center text-muted" role="status">
-                No insights match “{q}”{cat ? ` in ${cat}` : ''}. Try another term or clear the filters.
+                {t(p.noMatch, { q, cat: cat ? t(p.inCategory, { cat: ui.categories[cat] }) : '' })}
               </p>
             )}
           </div>
@@ -159,11 +170,12 @@ function FilterChip({ on, onClick, disabled, children }: { on: boolean; onClick:
 }
 
 export function Meta({ date, body, dark, className }: { date: string; body: string; dark?: boolean; className?: string }) {
+  const { ui, t, dateLocale } = useI18n()
   return (
     <div className={cn('flex items-center gap-4 text-xs', dark ? 'text-white/55' : 'text-muted', className)}>
-      <span>{formatDate(date)}</span>
+      <span>{formatDate(date, dateLocale)}</span>
       <span className="inline-flex items-center gap-1">
-        <Clock className="h-3.5 w-3.5" aria-hidden /> {readingTime(body)} min read
+        <Clock className="h-3.5 w-3.5" aria-hidden /> {t(ui.common.minRead, { n: readingTime(body) })}
       </span>
     </div>
   )

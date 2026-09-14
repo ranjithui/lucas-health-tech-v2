@@ -1,0 +1,89 @@
+LUCAS HEALTH TECH — VERSION 3
+=============================
+
+This folder is a complete, standalone website. Version 2 is untouched in the
+folder above it.
+
+What is new in Version 3
+  - The homepage hero plays a local background video (public/video/).
+  - The animated "system flow" now sits to the right of the Positioning text.
+  - The site is available in English (default), Spanish, French and German.
+    The switch is in the header next to the light/dark toggle.
+
+
+1. INSTALL (first time only)
+----------------------------
+Open a terminal in this folder and run:
+
+    npm install
+
+Requires Node.js 20 or newer. Download it from https://nodejs.org if needed.
+
+
+2. VIEW IT WHILE WORKING
+------------------------
+    npm run dev
+
+Then open http://localhost:5173 in a browser. Edits appear instantly.
+
+
+3. BUILD FOR PRODUCTION
+-----------------------
+    npm run build
+
+The finished site is written to the "dist" folder. To check it locally first:
+
+    npm run preview
+
+
+4. DEPLOY
+---------
+Upload the contents of "dist" to any static host.
+
+  - Vercel      : vercel.json is already included
+  - Netlify     : public/_redirects is already included
+  - Render      : Build command  ->  npm run build
+                  Publish dir    ->  dist
+
+The site is a single-page app, so the host must serve index.html for unknown
+paths. The two files above already do that for Vercel and Netlify.
+
+The video files are about 16 MB in total. Any static host serves them fine;
+make sure the host does not strip .mp4 files or block Range requests.
+
+
+5. WHERE TO CHANGE THINGS
+-------------------------
+ENGLISH wording lives in src/data/ — not inside the components.
+
+  Homepage headline and CTA copy .... src/data/company.ts  (positioningV2)
+  The three homepage numbers ........ src/data/company.ts  (homeMetrics)
+  The five capabilities ............. src/data/solutions.ts
+  The four audience groups .......... src/data/industries.ts
+  Case studies ...................... src/data/engagements.ts
+  Testimonials ...................... src/data/testimonials.ts
+  Articles .......................... src/data/insights.ts
+  Buttons, menus, labels, forms ..... src/i18n/locales/en.ts
+  Colours and typography ............ src/styles/index.css  (@theme block)
+
+TRANSLATIONS live in src/i18n/:
+
+  Spanish ........................... src/i18n/locales/es.ts  +  src/i18n/content/es.ts
+  French ............................ src/i18n/locales/fr.ts  +  src/i18n/content/fr.ts
+  German ............................ src/i18n/locales/de.ts  +  src/i18n/content/de.ts
+
+  "locales" = interface strings (menus, buttons, headings, form labels).
+  "content" = editorial copy (solutions, industries, case studies, articles).
+  Each entry is keyed by the same id or slug as the English data file.
+
+  If you change an English sentence, change the same key in the three other
+  files. If you forget a key, "npm run build" tells you which one.
+
+THE VIDEO:
+
+  public/video/hero-doctor-tablet-540.mp4   desktop (960x540)
+  public/video/hero-doctor-tablet-360.mp4   phones  (640x360)
+  public/video/hero-poster.jpg              still frame shown before the video loads
+
+  Replace the files with your own clip (keep the names) to change the hero.
+  Source: Pixabay, Content License, free for commercial use.

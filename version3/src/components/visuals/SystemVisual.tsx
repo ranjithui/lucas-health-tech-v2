@@ -9,7 +9,7 @@ import {
   type LucideProps,
 } from 'lucide-react'
 import { useLowPower } from '../../hooks/useMediaQuery'
-import { useI18n } from '../../i18n/context'
+import { useI18n } from '../../i18n/useI18n'
 import { cn } from '../../utils/cn'
 import { LogoLockup, LOCKUP_VIEWBOX, LOCKUP_RATIO } from '../layout/LogoLockup'
 import '../../styles/system-visual.css'

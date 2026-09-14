@@ -5,33 +5,25 @@ import { Seo } from '../components/seo/Seo'
 import { PageHero } from '../sections/PageHero'
 import { Section, Tag, Eyebrow } from '../components/ui/Primitives'
 import { ClosingCta } from '../sections/ClosingCta'
-import { engagements } from '../data/engagements'
+import { useI18n } from '../i18n/useI18n'
 import { fadeUp, stagger, viewportOnce } from '../animations/variants'
 
-const blocks = [
-  { key: 'challenge', label: 'The challenge' },
-  { key: 'approach', label: 'The approach' },
-  { key: 'solution', label: 'The solution' },
-  { key: 'outcome', label: 'The outcome' },
-] as const
+const blockKeys = ['challenge', 'approach', 'solution', 'outcome'] as const
 
 export default function CaseStudyDetail() {
   const { id } = useParams()
-  const engagement = engagements.find((e) => e.id === id)
+  const { ui, content } = useI18n()
+  const p = ui.pages.caseStudyDetail
+  const engagement = content.engagements.find((e) => e.id === id)
 
   if (!engagement) return <Navigate to="/case-studies" replace />
 
-  const others = engagements.filter((e) => e.id !== engagement.id)
+  const others = content.engagements.filter((e) => e.id !== engagement.id)
 
   return (
     <>
       <Seo title={`${engagement.client} — ${engagement.role}`} description={engagement.headline} type="article" />
-      <PageHero
-        eyebrow={engagement.sector}
-        title={engagement.client}
-        lead={engagement.headline}
-        back={{ to: '/case-studies', label: 'All case studies' }}
-      >
+      <PageHero eyebrow={engagement.sector} title={engagement.client} lead={engagement.headline} back={{ to: '/case-studies', label: p.back }}>
         <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent-300">{engagement.role}</p>
       </PageHero>
 
@@ -51,14 +43,18 @@ export default function CaseStudyDetail() {
                 <Tag key={t}>{t}</Tag>
               ))}
             </motion.div>
-            {engagement.note && <motion.p variants={fadeUp} className="mt-8 text-[13px] text-muted">{engagement.note}</motion.p>}
+            {engagement.note && (
+              <motion.p variants={fadeUp} className="mt-8 text-[13px] text-muted">
+                {engagement.note}
+              </motion.p>
+            )}
           </motion.div>
 
           <motion.div variants={stagger(0.08)} initial="hidden" whileInView="show" viewport={viewportOnce} className="space-y-12">
-            {blocks.map((b) => (
-              <motion.section key={b.key} variants={fadeUp}>
-                <Eyebrow>{b.label}</Eyebrow>
-                <p className="mt-5 text-[17px] leading-[1.7] text-muted">{engagement[b.key]}</p>
+            {blockKeys.map((key) => (
+              <motion.section key={key} variants={fadeUp}>
+                <Eyebrow>{p[key]}</Eyebrow>
+                <p className="mt-5 text-[17px] leading-[1.7] text-muted">{engagement[key]}</p>
               </motion.section>
             ))}
           </motion.div>
@@ -67,7 +63,7 @@ export default function CaseStudyDetail() {
 
       <Section className="bg-paper-200 py-20 md:py-24">
         <div className="container-x">
-          <Eyebrow>Other engagements</Eyebrow>
+          <Eyebrow>{p.others}</Eyebrow>
           <ul className="mt-8 border-t border-paper-300">
             {others.map((o) => (
               <li key={o.id} className="border-b border-paper-300">

@@ -5,26 +5,21 @@ import { Seo } from '../components/seo/Seo'
 import { PageHero } from '../sections/PageHero'
 import { Section, Tag } from '../components/ui/Primitives'
 import { ClosingCta } from '../sections/ClosingCta'
-import { engagements } from '../data/engagements'
+import { useI18n } from '../i18n/useI18n'
 import { fadeUp, stagger, viewportOnce } from '../animations/variants'
 
 export default function CaseStudies() {
+  const { ui, content } = useI18n()
+  const p = ui.pages.caseStudies
   return (
     <>
-      <Seo
-        title="Case Studies"
-        description="Select engagements: a FHIR-native oncology governance platform, enterprise stabilization under regulatory oversight, and enterprise data product and consent modernization."
-      />
-      <PageHero
-        eyebrow="Case studies"
-        title="Select engagements."
-        lead="Three engagements, described as they were delivered. No invented outcomes and no client logos we have not been given."
-      />
+      <Seo title={p.seoTitle} description={p.seoDescription} />
+      <PageHero eyebrow={p.eyebrow} title={p.title} lead={p.lead} />
 
       <Section>
         <div className="container-x">
           <motion.ul variants={stagger(0.1)} initial="hidden" whileInView="show" viewport={viewportOnce} className="grid gap-5">
-            {engagements.map((e) => (
+            {content.engagements.map((e) => (
               <motion.li key={e.id} variants={fadeUp} className="panel panel-link">
                 <Link to={`/case-studies/${e.id}`} className="group grid gap-8 px-7 py-12 md:grid-cols-[1fr_1.4fr] md:gap-14 md:px-12 md:py-16">
                   <div>
@@ -48,7 +43,7 @@ export default function CaseStudies() {
                       ))}
                     </div>
                     <span className="mt-8 inline-flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.18em] text-accent-600">
-                      Read the engagement
+                      {p.read}
                       <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
                     </span>
                   </div>

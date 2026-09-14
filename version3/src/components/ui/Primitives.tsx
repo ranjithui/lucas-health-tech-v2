@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { ArrowRight } from 'lucide-react'
 import { cn } from '../../utils/cn'
+import { useI18n } from '../../i18n/useI18n'
 import { fadeUp, stagger, viewportOnce } from '../../animations/variants'
 
 export function Tag({ children, dark, className }: { children: ReactNode; dark?: boolean; className?: string }) {
@@ -112,7 +113,7 @@ export function Reveal({ children, className, delay = 0 }: { children: ReactNode
 /** The single, repeated affordance that sends a reader from hook to depth. */
 export function Explore({
   to,
-  label = 'Explore',
+  label,
   dark,
   onAccent,
   className,
@@ -123,6 +124,7 @@ export function Explore({
   onAccent?: boolean
   className?: string
 }) {
+  const { ui } = useI18n()
   return (
     <Link
       to={to}
@@ -136,7 +138,7 @@ export function Explore({
         className,
       )}
     >
-      {label}
+      {label ?? ui.common.explore}
       <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/exp:translate-x-1" aria-hidden />
     </Link>
   )

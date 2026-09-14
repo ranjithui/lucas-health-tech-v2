@@ -8,7 +8,7 @@ import { ThemeToggle } from '../ui/ThemeToggle'
 import { LanguageSwitcher, LanguagePills } from '../ui/LanguageSwitcher'
 import { useScrolled } from '../../hooks/useScrollSpy'
 import { useTheme } from '../../hooks/useTheme'
-import { useI18n } from '../../i18n/context'
+import { useI18n } from '../../i18n/useI18n'
 import { cn } from '../../utils/cn'
 
 /**

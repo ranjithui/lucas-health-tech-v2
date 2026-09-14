@@ -4,7 +4,7 @@ import { Eyebrow } from '../../components/ui/Primitives'
 import { InteractiveCard } from '../../components/ui/InteractiveCard'
 import { fadeUp, stagger, viewportOnce } from '../../animations/variants'
 import { useTheme } from '../../hooks/useTheme'
-import { useI18n } from '../../i18n/context'
+import { useI18n } from '../../i18n/useI18n'
 
 const SystemVisual = lazy(() => import('../../components/visuals/SystemVisual').then((m) => ({ default: m.SystemVisual })))
 

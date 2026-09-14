@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
 import { Section, Eyebrow } from '../components/ui/Primitives'
-import { testimonials, type Testimonial } from '../data/testimonials'
+import type { Testimonial } from '../data/testimonials'
+import { useI18n } from '../i18n/useI18n'
 import { fadeUp, stagger, viewportOnce } from '../animations/variants'
 
 /** Initials for the monogram shown when a reference has no headshot on file. */
@@ -23,20 +24,9 @@ function Avatar({ person }: { person: Testimonial }) {
   return (
     <div className="size-11 shrink-0 overflow-hidden rounded-full border border-paper-300 bg-paper-200">
       {showPhoto ? (
-        <img
-          src={person.photo}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          width={44}
-          height={44}
-          onError={() => setFailed(true)}
-          className="size-full object-cover object-top"
-        />
+        <img src={person.photo} alt="" loading="lazy" decoding="async" width={44} height={44} onError={() => setFailed(true)} className="size-full object-cover object-top" />
       ) : (
-        <span className="flex size-full items-center justify-center font-mono text-[11px] tracking-[0.08em] text-muted">
-          {initials(person.name)}
-        </span>
+        <span className="flex size-full items-center justify-center font-mono text-[11px] tracking-[0.08em] text-muted">{initials(person.name)}</span>
       )}
     </div>
   )
@@ -44,20 +34,15 @@ function Avatar({ person }: { person: Testimonial }) {
 
 /** Executive references, set as quiet editorial columns rather than cards. */
 export function Testimonials({ limit = 8 }: { limit?: number }) {
-  const items = testimonials.slice(0, limit)
+  const { ui, content } = useI18n()
+  const items = content.testimonials.slice(0, limit)
   return (
     <Section id="references">
       <div className="container-x">
-        <Eyebrow>Executive references</Eyebrow>
-        <h2 className="display-lg mt-7 max-w-2xl text-balance">What leaders in healthcare say.</h2>
+        <Eyebrow>{ui.sections.references.eyebrow}</Eyebrow>
+        <h2 className="display-lg mt-7 max-w-2xl text-balance">{ui.sections.references.title}</h2>
 
-        <motion.ul
-          variants={stagger(0.07)}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
-          className="mt-14 grid gap-x-16 gap-y-12 md:grid-cols-2"
-        >
+        <motion.ul variants={stagger(0.07)} initial="hidden" whileInView="show" viewport={viewportOnce} className="mt-14 grid gap-x-16 gap-y-12 md:grid-cols-2">
           {items.map((t) => (
             <motion.li key={t.id} variants={fadeUp}>
               <figure className="border-t border-paper-300 pt-7">

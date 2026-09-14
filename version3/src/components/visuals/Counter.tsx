@@ -1,5 +1,5 @@
 import { useCountUp } from '../../hooks/useCountUp'
-import { useI18n } from '../../i18n/context'
+import { useI18n } from '../../i18n/useI18n'
 import { cn } from '../../utils/cn'
 
 interface CounterProps {

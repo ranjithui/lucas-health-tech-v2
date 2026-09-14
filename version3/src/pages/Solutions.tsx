@@ -6,15 +6,18 @@ import { PageHero } from '../sections/PageHero'
 import { Tag } from '../components/ui/Primitives'
 import { ClosingCta } from '../sections/ClosingCta'
 import { company } from '../data/company'
-import { solutions } from '../data/solutions'
+import { useI18n } from '../i18n/useI18n'
 import { fadeUp, stagger, viewportOnce } from '../animations/variants'
 
 export default function Solutions() {
+  const { ui, content } = useI18n()
+  const p = ui.pages.solutions
+  const { solutions } = content
   return (
     <>
       <Seo
-        title="Solutions"
-        description="Clinical systems, executive operations, AI and automation, digital innovation, and practice optimization for healthcare organizations."
+        title={p.seoTitle}
+        description={p.seoDescription}
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'ItemList',
@@ -28,11 +31,7 @@ export default function Solutions() {
           })),
         }}
       />
-      <PageHero
-        eyebrow="Solutions"
-        title="Five capabilities that work as one."
-        lead="Clinical systems, executive operations, automation, innovation, and practice performance — connected by a single operating discipline rather than handed off between specialists."
-      />
+      <PageHero eyebrow={p.eyebrow} title={p.title} lead={p.lead} />
 
       <section className="bg-paper-100">
         <div className="container-x">
@@ -68,7 +67,7 @@ export default function Solutions() {
                   </div>
 
                   <span className="inline-flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.18em] text-accent-600 md:mt-3">
-                    Explore
+                    {ui.common.explore}
                     <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
                   </span>
                 </Link>

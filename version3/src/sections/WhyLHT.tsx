@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { motion, useScroll, useMotionValueEvent } from 'motion/react'
 import { Section, SectionHeading } from '../components/ui/Primitives'
-import { differentiators, founder } from '../data/company'
+import { useI18n } from '../i18n/useI18n'
 import { cn } from '../utils/cn'
 import { usePrefersReducedMotion } from '../hooks/useMediaQuery'
 
@@ -9,6 +9,8 @@ import { usePrefersReducedMotion } from '../hooks/useMediaQuery'
 export function WhyLHT() {
   const ref = useRef<HTMLDivElement>(null)
   const reduced = usePrefersReducedMotion()
+  const { ui, content } = useI18n()
+  const { differentiators, founder } = content
   const [active, setActive] = useState(0)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 60%', 'end 60%'] })
   useMotionValueEvent(scrollYProgress, 'change', (v) => {
@@ -19,7 +21,7 @@ export function WhyLHT() {
   return (
     <Section id="why">
       <div className="container-x">
-        <SectionHeading eyebrow="Why Lucas Health Tech" title="Where clinical reality meets technical leadership." lead="Five reasons organizations bring us in when platforms and operations have to work together." />
+        <SectionHeading eyebrow={ui.sections.whyLht.eyebrow} title={ui.sections.whyLht.title} lead={ui.sections.whyLht.lead} />
 
         <div ref={ref} className="mt-14 grid gap-10 lg:grid-cols-[1fr_1.1fr]">
           {/* Sticky visual */}

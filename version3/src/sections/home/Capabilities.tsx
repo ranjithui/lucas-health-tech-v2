@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowRight } from 'lucide-react'
-import { solutions } from '../../data/solutions'
 import { Eyebrow, Explore } from '../../components/ui/Primitives'
 import { InteractiveCard } from '../../components/ui/InteractiveCard'
 import { useIsMobile } from '../../hooks/useMediaQuery'
+import { useI18n } from '../../i18n/useI18n'
 import { fadeUp, stagger, viewportOnce } from '../../animations/variants'
 import { cn } from '../../utils/cn'
 
@@ -18,6 +18,8 @@ import { cn } from '../../utils/cn'
  * white at 65–80%; `accent-300` and `gold-500` are the only tints allowed here.
  */
 export function Capabilities() {
+  const { ui, content } = useI18n()
+  const { solutions } = content
   const [activeId, setActiveId] = useState(solutions[0].id)
   const mobile = useIsMobile()
   const active = solutions.find((s) => s.id === activeId) ?? solutions[0]
@@ -28,10 +30,10 @@ export function Capabilities() {
       <div className="container-x relative">
         <motion.div variants={stagger(0.1)} initial="hidden" whileInView="show" viewport={viewportOnce} className="max-w-2xl">
           <motion.div variants={fadeUp}>
-            <Eyebrow onAccent>What we do</Eyebrow>
+            <Eyebrow onAccent>{ui.home.capabilities.eyebrow}</Eyebrow>
           </motion.div>
           <motion.h2 variants={fadeUp} className="display-lg mt-7 text-balance text-white">
-            Five capabilities, governed as one operating discipline.
+            {ui.home.capabilities.title}
           </motion.h2>
         </motion.div>
 
@@ -78,10 +80,7 @@ export function Capabilities() {
                         </span>
                       </span>
                       <ArrowRight
-                        className={cn(
-                          'h-4 w-4 shrink-0 transition-all duration-500',
-                          on ? 'translate-x-0 text-white opacity-100' : '-translate-x-2 opacity-0',
-                        )}
+                        className={cn('h-4 w-4 shrink-0 transition-all duration-500', on ? 'translate-x-0 text-white opacity-100' : '-translate-x-2 opacity-0')}
                         aria-hidden
                       />
                     </Link>

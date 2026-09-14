@@ -7,15 +7,21 @@ import { WhyLHT } from '../sections/WhyLHT'
 import { Impact } from '../sections/Impact'
 import { Testimonials } from '../sections/Testimonials'
 import { ClosingCta } from '../sections/ClosingCta'
-import { company, founder, technologies, positioningV2 } from '../data/company'
+import { company, technologies } from '../data/company'
+import { useI18n } from '../i18n/useI18n'
 import { fadeUp, stagger, viewportOnce } from '../animations/variants'
 
 export default function About() {
+  const { ui, content, t } = useI18n()
+  const p = ui.pages.about
+  const { founder, positioning } = content
+  const details = content.company
+
   return (
     <>
       <Seo
-        title="About"
-        description="Lucas Health Tech is led by Casi Vician Ischay, a former clinician, Board Director at Signature Health, and fractional and standing CTO/COO for health tech ventures and enterprise health systems."
+        title={p.seoTitle}
+        description={p.seoDescription}
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'Person',
@@ -25,11 +31,7 @@ export default function About() {
           sameAs: founder.linkedin,
         }}
       />
-      <PageHero
-        eyebrow="About"
-        title={positioningV2.trustHeading}
-        lead="An executive services firm for healthcare, founded and led by a former clinician who architects the platforms and runs the operations in question."
-      />
+      <PageHero eyebrow={p.eyebrow} title={positioning.trustHeading} lead={p.lead} />
 
       {/* Founder */}
       <Section>
@@ -38,7 +40,7 @@ export default function About() {
             <motion.div variants={fadeUp} className="mb-10 max-w-xs overflow-hidden rounded-3xl border border-paper-300/70 bg-paper-200 shadow-soft">
               <img
                 src={founder.photo}
-                alt={`${founder.name}, ${founder.role} of ${company.name}`}
+                alt={t(p.photoAlt, { name: founder.name, role: founder.role, company: company.name })}
                 width={292}
                 height={366}
                 decoding="async"
@@ -46,7 +48,7 @@ export default function About() {
               />
             </motion.div>
             <motion.div variants={fadeUp}>
-              <Eyebrow>Leadership</Eyebrow>
+              <Eyebrow>{p.leadership}</Eyebrow>
             </motion.div>
             <motion.h2 variants={fadeUp} className="mt-7 font-display text-[clamp(1.8rem,3vw,2.4rem)] leading-tight text-text">
               {founder.name}
@@ -71,7 +73,7 @@ export default function About() {
               rel="noreferrer"
               className="mt-8 inline-flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.18em] text-accent-600 transition-colors hover:text-text"
             >
-              <Linkedin className="h-3.5 w-3.5" aria-hidden /> Connect on LinkedIn
+              <Linkedin className="h-3.5 w-3.5" aria-hidden /> {p.connect}
             </motion.a>
           </motion.div>
 
@@ -81,13 +83,11 @@ export default function About() {
               {founder.quote}
             </motion.blockquote>
             <motion.p variants={fadeUp} className="mt-10 max-w-xl text-pretty lead">
-              Lucas Health Tech brings over 20 years of healthcare expertise, with consultants armed with clinical degrees. We
-              provide personal IT, business, and executive attention rather than ticket-based support, and we work where clinical
-              workflows, regulatory requirements, and enterprise scale intersect.
+              {p.body}
             </motion.p>
-            <motion.div variants={fadeUp} className="mt-10 flex flex-wrap gap-1.5" aria-label="Technologies and platforms">
-              {technologies.map((t) => (
-                <Tag key={t}>{t}</Tag>
+            <motion.div variants={fadeUp} className="mt-10 flex flex-wrap gap-1.5" aria-label={ui.common.technologiesAndPlatforms}>
+              {technologies.map((x) => (
+                <Tag key={x}>{x}</Tag>
               ))}
             </motion.div>
           </motion.div>
@@ -101,50 +101,34 @@ export default function About() {
       <Section className="py-20 md:py-28">
         <div className="container-x grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-24">
           <div>
-            <Eyebrow>Location</Eyebrow>
-            <h2 className="display-md mt-7 max-w-md text-balance">Based in Concord, Ohio. Working with organizations nationally.</h2>
-            <p className="mt-6 max-w-md text-[16px] leading-[1.65] text-muted">
-              Engagements have spanned Ohio, Wisconsin, North Carolina, and national-scale enterprise programs.
-            </p>
+            <Eyebrow>{p.location}</Eyebrow>
+            <h2 className="display-md mt-7 max-w-md text-balance">{p.locationTitle}</h2>
+            <p className="mt-6 max-w-md text-[16px] leading-[1.65] text-muted">{p.locationBody}</p>
           </div>
           <div className="grid gap-4 self-start">
-          <a
-            href={company.mapsHref}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Open Concord, Ohio in Google Maps"
-            className="panel panel-link block overflow-hidden"
-          >
-            <img
-              src="/images/map-concord-ohio.webp"
-              alt="Map of Concord, Ohio, where Lucas Health Tech is based"
-              loading="lazy"
-              decoding="async"
-              width={614}
-              height={384}
-              className="aspect-[16/10] w-full object-cover"
-            />
-          </a>
-          <dl className="grid gap-4 self-start sm:grid-cols-3">
-            {[
-              { label: 'Address', value: company.location, href: company.mapsHref },
-              { label: 'Phone', value: company.phone, href: company.phoneHref },
-              { label: 'Hours', value: company.hours },
-            ].map(({ label, value, href }) => (
-              <div key={label} className="panel px-6 py-6">
-                <dt className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-muted">{label}</dt>
-                <dd className="mt-2 text-[15px] text-text">
-                  {href ? (
-                    <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="transition-colors hover:text-accent-700">
-                      {value}
-                    </a>
-                  ) : (
-                    value
-                  )}
-                </dd>
-              </div>
-            ))}
-          </dl>
+            <a href={details.mapsHref} target="_blank" rel="noreferrer" aria-label={p.mapAria} className="panel panel-link block overflow-hidden">
+              <img src="/images/map-concord-ohio.webp" alt={p.mapAlt} loading="lazy" decoding="async" width={614} height={384} className="aspect-[16/10] w-full object-cover" />
+            </a>
+            <dl className="grid gap-4 self-start sm:grid-cols-3">
+              {[
+                { label: p.address, value: details.location, href: details.mapsHref },
+                { label: p.phone, value: details.phone, href: details.phoneHref },
+                { label: p.hours, value: details.hours },
+              ].map(({ label, value, href }) => (
+                <div key={label} className="panel px-6 py-6">
+                  <dt className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-muted">{label}</dt>
+                  <dd className="mt-2 text-[15px] text-text">
+                    {href ? (
+                      <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="transition-colors hover:text-accent-700">
+                        {value}
+                      </a>
+                    ) : (
+                      value
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
       </Section>

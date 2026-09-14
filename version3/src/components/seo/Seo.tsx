@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom'
 import { company } from '../../data/company'
-import { useI18n } from '../../i18n/context'
+import { useI18n } from '../../i18n/useI18n'
 
 interface SeoProps {
   title?: string

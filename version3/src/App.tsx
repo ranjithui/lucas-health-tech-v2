@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { MotionConfig } from 'motion/react'
 import { RootLayout } from './layouts/RootLayout'
+import { useI18n } from './i18n/useI18n'
 import Home from './pages/Home'
 
 const Solutions = lazy(() => import('./pages/Solutions'))
@@ -19,8 +20,9 @@ const PrivacyPolicy = lazy(() => import('./pages/Legal').then((m) => ({ default:
 const Terms = lazy(() => import('./pages/Legal').then((m) => ({ default: m.Terms })))
 
 function PageFallback() {
+  const { ui } = useI18n()
   return (
-    <div className="flex min-h-[70vh] items-center justify-center bg-paper-100" role="status" aria-label="Loading">
+    <div className="flex min-h-[70vh] items-center justify-center bg-paper-100" role="status" aria-label={ui.common.loading}>
       <span className="h-6 w-6 animate-spin rounded-full border border-accent-500 border-t-transparent" />
     </div>
   )

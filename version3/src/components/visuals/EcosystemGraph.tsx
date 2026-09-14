@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useInView } from 'motion/react'
-import { ecosystemLinks, ecosystemNodes, type EcosystemNode } from '../../data/ecosystem'
+import { ecosystemLinks } from '../../data/ecosystem'
+import { useI18n } from '../../i18n/useI18n'
 import { usePrefersReducedMotion } from '../../hooks/useMediaQuery'
 import { cn } from '../../utils/cn'
 
@@ -13,24 +14,26 @@ const H = 420
  * Follows the page theme: every colour is a `var(--color-*)` token so the graph
  * re-skins itself when the theme flips. Idle links are hairlines, the active
  * path runs brand blue → teal, and unrelated nodes dim through opacity only.
+ * Selection is held by id so it survives a language switch.
  */
 export function EcosystemGraph() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.35 })
   const reduced = usePrefersReducedMotion()
-  const [selected, setSelected] = useState<EcosystemNode>(ecosystemNodes[2])
+  const { ui, content } = useI18n()
+  const nodes = content.ecosystemNodes
+  const [selectedId, setSelectedId] = useState(nodes[2].id)
+  const selected = nodes.find((n) => n.id === selectedId) ?? nodes[2]
 
-  const pos = useMemo(() => Object.fromEntries(ecosystemNodes.map((n) => [n.id, { x: (n.x / 100) * W, y: (n.y / 100) * H }])), [])
+  const pos = useMemo(() => Object.fromEntries(nodes.map((n) => [n.id, { x: (n.x / 100) * W, y: (n.y / 100) * H }])), [nodes])
 
-  const linked = new Set(
-    ecosystemLinks.filter(([a, b]) => a === selected.id || b === selected.id).flatMap(([a, b]) => [a, b]),
-  )
+  const linked = new Set(ecosystemLinks.filter(([a, b]) => a === selected.id || b === selected.id).flatMap(([a, b]) => [a, b]))
 
   return (
     <div ref={ref} className="grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-center">
-      <p className="sr-only">Ecosystem: Patients, Providers, Technology, Data, Operations, and Outcomes are connected. Select a node to read its capabilities.</p>
+      <p className="sr-only">{ui.sections.ecosystem.sr}</p>
       <div className="relative hidden overflow-hidden rounded-2xl border border-paper-300 bg-surface p-4 shadow-soft grid-bg-light sm:block sm:p-6">
-        <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" role="group" aria-label="Healthcare ecosystem map">
+        <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" role="group" aria-label={ui.sections.ecosystem.mapAria}>
           <defs>
             <linearGradient id="eco-link" x1="0" x2="1" y1="0" y2="0">
               <stop offset="0" style={{ stopColor: 'var(--color-accent-500)', stopOpacity: 0.95 }} />
@@ -71,7 +74,7 @@ export function EcosystemGraph() {
               </g>
             )
           })}
-          {ecosystemNodes.map((n, i) => {
+          {nodes.map((n, i) => {
             const p = pos[n.id]
             const isSel = n.id === selected.id
             const dim = !isSel && !linked.has(n.id)
@@ -87,11 +90,11 @@ export function EcosystemGraph() {
                 tabIndex={0}
                 aria-pressed={isSel}
                 aria-label={`${n.label}: ${n.short}`}
-                onClick={() => setSelected(n)}
+                onClick={() => setSelectedId(n.id)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault()
-                    setSelected(n)
+                    setSelectedId(n.id)
                   }
                 }}
               >
@@ -101,36 +104,11 @@ export function EcosystemGraph() {
                     {!reduced && <animate attributeName="stroke-opacity" values="0.6;0" dur="1.8s" repeatCount="indefinite" />}
                   </circle>
                 )}
-                <circle
-                  cx={p.x}
-                  cy={p.y}
-                  r={22}
-                  fill={isSel ? 'var(--color-accent-500)' : 'var(--color-surface)'}
-                  stroke={isSel ? 'var(--color-accent-400)' : 'var(--color-accent-500)'}
-                  strokeWidth={2}
-                  opacity={dim ? 0.45 : 1}
-                />
-                <text
-                  x={p.x}
-                  y={p.y + 4}
-                  textAnchor="middle"
-                  fontSize={11}
-                  fontFamily="ui-monospace, monospace"
-                  fill={isSel ? '#fff' : 'var(--color-accent-600)'}
-                  opacity={dim ? 0.6 : 1}
-                >
+                <circle cx={p.x} cy={p.y} r={22} fill={isSel ? 'var(--color-accent-500)' : 'var(--color-surface)'} stroke={isSel ? 'var(--color-accent-400)' : 'var(--color-accent-500)'} strokeWidth={2} opacity={dim ? 0.45 : 1} />
+                <text x={p.x} y={p.y + 4} textAnchor="middle" fontSize={11} fontFamily="ui-monospace, monospace" fill={isSel ? '#fff' : 'var(--color-accent-600)'} opacity={dim ? 0.6 : 1}>
                   {String(i + 1).padStart(2, '0')}
                 </text>
-                <text
-                  x={p.x}
-                  y={p.y + 44}
-                  textAnchor="middle"
-                  fontSize={13}
-                  fontWeight={600}
-                  fontFamily="Manrope, Inter, sans-serif"
-                  fill="var(--color-text)"
-                  opacity={dim ? 0.5 : 1}
-                >
+                <text x={p.x} y={p.y + 44} textAnchor="middle" fontSize={13} fontWeight={600} fontFamily="Manrope, Inter, sans-serif" fill="var(--color-text)" opacity={dim ? 0.5 : 1}>
                   {n.label}
                 </text>
               </motion.g>
@@ -163,13 +141,13 @@ export function EcosystemGraph() {
             </ul>
           </motion.div>
         </AnimatePresence>
-        <div className="mt-4 flex flex-wrap gap-2 sm:mt-4" role="tablist" aria-label="Ecosystem nodes">
-          {ecosystemNodes.map((n) => (
+        <div className="mt-4 flex flex-wrap gap-2 sm:mt-4" role="tablist" aria-label={ui.sections.ecosystem.nodesAria}>
+          {nodes.map((n) => (
             <button
               key={n.id}
               role="tab"
               aria-selected={n.id === selected.id}
-              onClick={() => setSelected(n)}
+              onClick={() => setSelectedId(n.id)}
               className={cn(
                 'rounded-full border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition',
                 n.id === selected.id ? 'border-accent-500 bg-accent-500/10 text-accent-600' : 'border-paper-300 text-muted hover:border-accent-500/40 hover:text-text',

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { LinkedInIcon as Linkedin } from '../ui/LinkedInIcon'
 import { Logo } from './Logo'
-import { useI18n } from '../../i18n/context'
+import { useI18n } from '../../i18n/useI18n'
 
 /**
  * Wayfinding only — the CTA is its own section above it.

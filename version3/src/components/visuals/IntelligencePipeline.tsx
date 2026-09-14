@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'motion/react'
-import { intelligencePipeline } from '../../data/ecosystem'
+import { useI18n } from '../../i18n/useI18n'
 import { usePrefersReducedMotion } from '../../hooks/useMediaQuery'
 import { cn } from '../../utils/cn'
 
@@ -9,33 +9,35 @@ export function IntelligencePipeline() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { amount: 0.4 })
   const reduced = usePrefersReducedMotion()
+  const { ui, content } = useI18n()
+  const stages = content.intelligencePipeline
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
 
   useEffect(() => {
     if (!inView || paused || reduced) return
-    const t = setInterval(() => setActive((a) => (a + 1) % intelligencePipeline.length), 2600)
+    const t = setInterval(() => setActive((a) => (a + 1) % stages.length), 2600)
     return () => clearInterval(t)
-  }, [inView, paused, reduced])
+  }, [inView, paused, reduced, stages.length])
 
-  const stage = intelligencePipeline[active]
+  const stage = stages[active]
 
   return (
     <div ref={ref} className="grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:gap-14" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       {/* Stage rail */}
-      <ol className="relative" aria-label="Intelligence pipeline stages">
+      <ol className="relative" aria-label={ui.sections.intelligence.stagesAria}>
         <div className="absolute left-[19px] top-6 bottom-6 w-px bg-white/10" aria-hidden />
         {!reduced && (
           <motion.div
             aria-hidden
             className="absolute left-[19px] top-6 w-px bg-gradient-to-b from-accent-500 via-accent-400 to-gold-500"
             initial={{ height: 0 }}
-            animate={{ height: `${(active / (intelligencePipeline.length - 1)) * 100}%` }}
+            animate={{ height: `${(active / (stages.length - 1)) * 100}%` }}
             style={{ maxHeight: 'calc(100% - 3rem)' }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           />
         )}
-        {intelligencePipeline.map((s, i) => {
+        {stages.map((s, i) => {
           const on = i === active
           return (
             <li key={s.id}>
@@ -45,10 +47,7 @@ export function IntelligencePipeline() {
                 onFocus={() => setPaused(true)}
                 onBlur={() => setPaused(false)}
                 aria-current={on ? 'step' : undefined}
-                className={cn(
-                  'group relative flex w-full items-center gap-5 rounded-2xl px-2 py-3 text-left transition',
-                  on ? 'text-white' : 'text-white/50 hover:text-white/80',
-                )}
+                className={cn('group relative flex w-full items-center gap-5 rounded-2xl px-2 py-3 text-left transition', on ? 'text-white' : 'text-white/50 hover:text-white/80')}
               >
                 <span
                   className={cn(
@@ -73,10 +72,10 @@ export function IntelligencePipeline() {
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-accent-400" aria-hidden />
-            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/60">Live pipeline</span>
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/60">{ui.sections.intelligence.live}</span>
           </div>
           <span className="font-mono text-[11px] text-white/40">
-            {String(active + 1).padStart(2, '0')} / {String(intelligencePipeline.length).padStart(2, '0')}
+            {String(active + 1).padStart(2, '0')} / {String(stages.length).padStart(2, '0')}
           </span>
         </div>
 
@@ -115,12 +114,12 @@ export function IntelligencePipeline() {
 
         {/* Progress bars */}
         <div className="mt-8 grid grid-cols-5 gap-1.5" aria-hidden>
-          {intelligencePipeline.map((s, i) => (
+          {stages.map((s, i) => (
             <div key={s.id} className="h-1 overflow-hidden rounded-full bg-white/10">
               <motion.div
                 className="h-full bg-accent-400"
                 initial={false}
-                animate={{ width: i < active ? '100%' : i === active ? '100%' : '0%' }}
+                animate={{ width: i <= active ? '100%' : '0%' }}
                 transition={{ duration: i === active && !reduced && !paused ? 2.5 : 0.3, ease: 'linear' }}
               />
             </div>
