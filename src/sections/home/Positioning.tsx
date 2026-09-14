@@ -26,7 +26,7 @@ export function Positioning() {
 
           <motion.ul variants={stagger(0.08)} className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {domains.map((d) => (
-              <InteractiveCard key={d.id} as="li" className="panel px-6 py-8">
+              <InteractiveCard key={d.id} as="li" variant="tilt" className="panel px-6 py-8">
                 <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-accent-600 transition-colors duration-300 group-hover/card:text-gold-600">
                   {d.label}
                 </span>

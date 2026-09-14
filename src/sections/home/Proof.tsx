@@ -18,7 +18,7 @@ export function Proof() {
           className="grid gap-12 border-y border-paper-300 py-10 sm:grid-cols-3 sm:gap-8"
         >
           {homeMetrics.map((m) => (
-            <InteractiveCard key={m.label} tilt={2} lift={3} line={false} className="rounded-xl px-4 py-3 sm:px-5">
+            <InteractiveCard key={m.label} variant="glow" className="rounded-xl px-4 py-3 sm:px-5">
               <dd className="font-display text-[clamp(2.6rem,5vw,3.6rem)] leading-none tracking-[-0.03em] text-text transition-colors duration-300 group-hover/card:text-accent-700">
                 <Counter value={m.value} suffix={m.suffix} decimals={'decimals' in m ? m.decimals : 0} />
               </dd>

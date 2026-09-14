@@ -95,25 +95,27 @@ export function Capabilities() {
               <AnimatePresence mode="wait">
                 <InteractiveCard
                   key={active.id}
+                  variant="parallax"
                   variants={undefined}
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0 round 1.25rem)' }}
+                  animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0 round 1.25rem)' }}
                   exit={{ opacity: 0, y: -10 }}
-                  tilt={3}
-                  lift={3}
+                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                   className="card-on-accent relative overflow-hidden"
                 >
-                  <img
-                    src={active.image.src}
-                    alt={active.image.alt}
-                    loading="lazy"
-                    decoding="async"
-                    width={600}
-                    height={338}
-                    className="aspect-[16/9] w-full object-cover transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover/card:scale-[1.04]"
-                  />
+                  <div className="overflow-hidden">
+                    <img
+                      src={active.image.src}
+                      alt={active.image.alt}
+                      loading="lazy"
+                      decoding="async"
+                      width={600}
+                      height={338}
+                      className="icard-parallax-img aspect-[16/9] w-full object-cover"
+                    />
+                  </div>
                   <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-accent-500/10 blur-3xl" />
-                  <div className="relative p-9">
+                  <div className="relative overflow-hidden p-9">
                     <span className="font-display text-[64px] leading-none text-text/[0.10]">{active.index}</span>
                     <h3 className="-mt-8 font-display text-2xl text-text">{active.fullTitle}</h3>
                     <p className="mt-4 text-[15.5px] leading-[1.6] text-muted">{active.short}</p>

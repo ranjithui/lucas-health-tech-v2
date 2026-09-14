@@ -28,7 +28,7 @@ export function WhoWeServe() {
           className="mt-14 grid gap-5 sm:grid-cols-2"
         >
           {industries.map((ind) => (
-            <InteractiveCard key={ind.id} as="li" className="panel">
+            <InteractiveCard key={ind.id} as="li" variant="sweep" className="panel">
               <Link to={`/industries/${ind.id}`} className="flex h-full flex-col justify-between gap-10 px-7 py-10 sm:px-9 sm:py-12">
                 <div>
                   <h3 className="font-display text-[24px] leading-tight text-text transition-colors duration-300 group-hover/card:text-accent-700">
