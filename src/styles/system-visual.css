@@ -1,0 +1,140 @@
+/* ──────────────────────────────────────────────────────────────────────────
+ * System visual (homepage hero) — the continuous choreography.
+ *
+ * Imported by src/components/visuals/SystemVisual.tsx. Every class is
+ * prefixed `sv-`. One story cycle is --sv-cycle (5.4s); the TSX mirrors it
+ * as CYCLE, so change both together.
+ *
+ * Technique: nearly every moving element is *windowed*. Its keyframes do
+ * their work in the first ~20% of the cycle and then hold a hidden/rest
+ * state, and the TSX places that window at the right moment of the story
+ * with a negative animation-delay (see `at()` in the component). That way a
+ * handful of keyframes serve every packet, particle and pulse, and they all
+ * share one clock, so they never drift apart.
+ *
+ * Dash packets: the animated paths carry pathLength="400", so offsets are
+ * in "per-400" units regardless of a path's real length. A dash pattern with
+ * a period longer than 2 × 400 guarantees only one dash can ever be on the
+ * path; offset +6 parks it just before the start, −404 just past the end
+ * (both beyond the reach of a round cap), so a parked packet is invisible.
+ *
+ * Story, in % of the cycle:
+ *   0–22   Healthcare → Intelligence   (sv-comet on the signal paths)
+ *   18–40  the core illuminates        (sv-core-lit)
+ *   20–46  Intelligence → four systems (sv-dot-out) + neighbour exchange
+ *   34–66  lateral exchange, systems → core replies (sv-dot-in)
+ *   40–50  systems pulse as packets arrive (sv-pulse)
+ *   58–84  systems → Transformation    (sv-comet on the convergence paths)
+ *   81–95  Transformation fires        (sv-fire, sv-fire-halo)
+ *   95–100 rest
+ * ────────────────────────────────────────────────────────────────────────── */
+
+.sv-scene {
+  --sv-cycle: 5.4s;
+}
+
+/* ── Windowed packets ─────────────────────────────────────────────────── */
+
+/* A 30-unit comet crossing the whole path in 22% of the cycle. */
+@keyframes sv-comet {
+  0%        { stroke-dashoffset: 34;   animation-timing-function: cubic-bezier(0.5, 0, 0.3, 1); }
+  22%, 100% { stroke-dashoffset: -404; }
+}
+/* A 3-unit dot (round caps make it a circle) travelling forward … */
+@keyframes sv-dot-out {
+  0%        { stroke-dashoffset: 6;    animation-timing-function: cubic-bezier(0.45, 0, 0.3, 1); }
+  20%, 100% { stroke-dashoffset: -404; }
+}
+/* … and the same dot travelling back toward the path's start. */
+@keyframes sv-dot-in {
+  0%        { stroke-dashoffset: -404; animation-timing-function: cubic-bezier(0.45, 0, 0.3, 1); }
+  20%, 100% { stroke-dashoffset: 6; }
+}
+
+.sv-comet,
+.sv-dot-out,
+.sv-dot-in {
+  stroke-linecap: round;
+  animation-duration: var(--sv-cycle);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.sv-comet   { stroke-dasharray: 30 1170; stroke-dashoffset: -404; animation-name: sv-comet; }
+.sv-dot-out { stroke-dasharray: 3 1197;  stroke-dashoffset: -404; animation-name: sv-dot-out; }
+.sv-dot-in  { stroke-dasharray: 3 1197;  stroke-dashoffset: 6;    animation-name: sv-dot-in; }
+
+/* ── Windowed pulses ──────────────────────────────────────────────────── */
+
+/* A node's halo ring when a packet lands: 1 → 1.1 → 1, brightening briefly. */
+@keyframes sv-pulse {
+  0%        { opacity: 0.35; transform: scale(1); }
+  6%        { opacity: 1;    transform: scale(1.1); }
+  18%, 100% { opacity: 0.35; transform: scale(1); }
+}
+/* The core's inner illumination as the healthcare signal reaches it. */
+@keyframes sv-core-lit {
+  0%        { opacity: 0.45; }
+  8%        { opacity: 1; }
+  30%       { opacity: 0.6; }
+  100%      { opacity: 0.45; }
+}
+/* Transformation's gold ring: brief, soft, then back to a whisper. */
+@keyframes sv-fire {
+  0%        { opacity: 0.3;  transform: scale(1); }
+  5%        { opacity: 0.95; transform: scale(1.12); }
+  16%, 100% { opacity: 0.3;  transform: scale(1); }
+}
+/* …and the gold ground beneath it. */
+@keyframes sv-fire-halo {
+  0%        { opacity: 0; }
+  5%        { opacity: 1; }
+  18%, 100% { opacity: 0; }
+}
+
+.sv-pulse,
+.sv-fire {
+  /* transform-origin is set inline (the node's centre in user units). */
+  transform-box: view-box;
+}
+.sv-pulse,
+.sv-core-lit,
+.sv-fire,
+.sv-fire-halo {
+  animation-duration: var(--sv-cycle);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.sv-pulse     { animation-name: sv-pulse; }
+.sv-core-lit  { animation-name: sv-core-lit; }
+.sv-fire      { animation-name: sv-fire; }
+.sv-fire-halo { animation-name: sv-fire-halo; }
+
+/* ── Ambient, never-ending ────────────────────────────────────────────── */
+
+/* A faint current of short dashes on the live connections (real px units,
+ * no pathLength, so the dashes are the same size on every path). The offset
+ * travels exactly one dash period per iteration, so the loop is seamless. */
+@keyframes sv-flow { to { stroke-dashoffset: -16; } }
+.sv-flow {
+  stroke-dasharray: 3 13;
+  animation: sv-flow 1.8s linear infinite;
+}
+
+/* The core's dashed orbit, turning once a minute. */
+@keyframes sv-spin { to { transform: rotate(360deg); } }
+.sv-spin {
+  transform-box: view-box;
+  animation: sv-spin 64s linear infinite;
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────────
+ * The component already renders a static scene when useLowPower() is true
+ * (which includes prefers-reduced-motion); this is the belt to those braces
+ * for the first paint before the hook settles. */
+@media (prefers-reduced-motion: reduce) {
+  .sv-comet, .sv-dot-out, .sv-dot-in, .sv-flow { display: none; }
+  .sv-pulse, .sv-core-lit, .sv-fire, .sv-fire-halo, .sv-spin { animation: none; }
+  .sv-pulse { opacity: 0.5; }
+  .sv-core-lit { opacity: 0.6; }
+  .sv-fire { opacity: 0.45; }
+}
