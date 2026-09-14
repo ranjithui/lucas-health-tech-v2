@@ -7,14 +7,14 @@ import { fadeUp, stagger, viewportOnce } from '../../animations/variants'
 /** A quiet credibility strip. Three verified figures, no dashboard. */
 export function Proof() {
   return (
-    <section className="bg-paper-100 py-20 md:py-28">
+    <section className="bg-paper-100 py-14 md:py-20">
       <div className="container-x">
         <motion.dl
           variants={stagger(0.12)}
           initial="hidden"
           whileInView="show"
           viewport={viewportOnce}
-          className="grid gap-12 border-y border-paper-300 py-14 sm:grid-cols-3 sm:gap-8"
+          className="grid gap-12 border-y border-paper-300 py-10 sm:grid-cols-3 sm:gap-8"
         >
           {homeMetrics.map((m) => (
             <motion.div key={m.label} variants={fadeUp} className="sm:px-2">

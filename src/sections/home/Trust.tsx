@@ -9,7 +9,7 @@ const featured = testimonials.find((t) => t.id === 'marx') ?? testimonials[0]
 
 export function Trust() {
   return (
-    <section className="bg-paper-100 py-24 md:py-36">
+    <section className="bg-paper-100 py-20 md:py-28">
       <div className="container-x">
         <motion.div variants={stagger(0.1)} initial="hidden" whileInView="show" viewport={viewportOnce} className="grid gap-16 lg:grid-cols-[1fr_1.15fr] lg:gap-24">
           <div>

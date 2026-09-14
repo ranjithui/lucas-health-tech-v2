@@ -6,7 +6,7 @@ import { fadeUp, stagger, viewportOnce } from '../../animations/variants'
 /** Executive positioning. Large type, a short paragraph, and a lot of air. */
 export function Positioning() {
   return (
-    <section className="relative bg-mist-50 py-28 md:py-40">
+    <section className="relative bg-mist-50 py-20 md:py-28">
       <div className="container-x">
         <motion.div variants={stagger(0.1)} initial="hidden" whileInView="show" viewport={viewportOnce}>
           <motion.div variants={fadeUp}>

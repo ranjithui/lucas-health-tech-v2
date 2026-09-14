@@ -22,7 +22,7 @@ export function Capabilities() {
   const active = solutions.find((s) => s.id === activeId) ?? solutions[0]
 
   return (
-    <section id="capabilities" className="relative bg-field py-16 text-white md:py-24">
+    <section id="capabilities" className="relative bg-field py-14 text-white md:py-20">
       <div aria-hidden className="absolute inset-0 grid-bg opacity-40" />
       <div className="container-x relative">
         <motion.div variants={stagger(0.1)} initial="hidden" whileInView="show" viewport={viewportOnce} className="max-w-2xl">

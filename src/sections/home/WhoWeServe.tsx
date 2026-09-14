@@ -8,7 +8,7 @@ import { fadeUp, stagger, viewportOnce } from '../../animations/variants'
 /** Four decision-maker groups. One line each — depth lives on Industries. */
 export function WhoWeServe() {
   return (
-    <section className="bg-mist-100 py-24 md:py-36">
+    <section className="bg-mist-100 py-20 md:py-28">
       <div className="container-x">
         <motion.div variants={stagger(0.1)} initial="hidden" whileInView="show" viewport={viewportOnce} className="max-w-2xl">
           <motion.div variants={fadeUp}>

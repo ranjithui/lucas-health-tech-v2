@@ -64,7 +64,7 @@ export function Hero() {
       <div aria-hidden className="absolute inset-0" style={{ background: t.bloom }} />
       <div aria-hidden className={cn('absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t to-transparent', t.fade)} />
 
-      <div className="container-x relative grid items-center gap-14 pb-24 pt-36 md:min-h-[94svh] md:pb-28 md:pt-40 lg:grid-cols-[1.05fr_1fr] lg:gap-10">
+      <div className="container-x relative grid items-center gap-12 pb-16 pt-32 md:min-h-[82svh] md:pb-20 md:pt-36 lg:grid-cols-[1.05fr_1fr] lg:gap-10">
         <motion.div style={{ y, opacity }} className="relative z-10">
           <motion.div variants={stagger(0.05, 0.08)} initial="hidden" animate="show">
             <motion.div variants={fadeUp} className={cn('mb-8 font-mono text-[10.5px] uppercase tracking-[0.24em]', t.eyebrow)}>

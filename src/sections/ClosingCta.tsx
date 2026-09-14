@@ -12,7 +12,7 @@ import { fadeUp, stagger, viewportOnce } from '../animations/variants'
  */
 export function ClosingCta() {
   return (
-    <section className="relative overflow-hidden bg-field pb-20 pt-28 text-white md:pb-28 md:pt-40">
+    <section className="relative overflow-hidden bg-field pb-16 pt-20 text-white md:pb-20 md:pt-28">
       <div aria-hidden className="absolute inset-0 grid-bg opacity-50" />
       <div
         aria-hidden
