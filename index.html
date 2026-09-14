@@ -3,20 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#f5f7fa" />
+    <meta name="theme-color" content="#f7f9fa" />
     <!-- Ground color before the stylesheet arrives, so neither theme flashes the other. -->
     <style>
-      html { background: #f5f7fa; color-scheme: light; }
-      html.dark { background: #04081c; color-scheme: dark; }
+      html { background: #f7f9fa; color-scheme: light; }
+      html.dark { background: #071521; color-scheme: dark; }
     </style>
     <script>
       /* Paint the stored theme before first render so there is no flash of the
          wrong ground. Key and default must match src/hooks/useTheme.ts. */
       (function () {
         try {
-          var dark = localStorage.getItem('lht-theme') === 'dark'
+          var stored = localStorage.getItem('lht-theme')
+          var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
           document.documentElement.classList.toggle('dark', dark)
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#04081c' : '#f5f7fa')
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#071521' : '#f7f9fa')
         } catch (e) {}
       })()
     </script>
@@ -26,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <title>Lucas Health Tech | Healthcare complexity demands more than technology</title>

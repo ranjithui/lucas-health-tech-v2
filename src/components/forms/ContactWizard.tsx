@@ -88,7 +88,7 @@ export function ContactWizard({ initialIntent }: { initialIntent?: Intent | null
   const stepLabels = ['What are you looking for?', 'Tell us about you', 'Done']
 
   return (
-    <div className="rounded-[2rem] border border-paper-300 bg-surface p-6 shadow-lift sm:p-10">
+    <div className="rounded-2xl border border-paper-300 bg-surface p-6 shadow-lift sm:p-10">
       {/* Progress */}
       <ol className="mb-8 flex items-center gap-2" aria-label="Progress">
         {stepLabels.map((l, i) => (
@@ -96,7 +96,7 @@ export function ContactWizard({ initialIntent }: { initialIntent?: Intent | null
             <span
               className={cn(
                 'grid h-7 w-7 shrink-0 place-items-center rounded-full font-mono text-[11px] transition-colors',
-                i < step ? 'bg-accent-500 text-white' : i === step ? 'bg-ink-900 text-white dark:bg-text dark:text-[#04081c]' : 'bg-paper-200 text-muted',
+                i < step ? 'bg-accent-500 text-white' : i === step ? 'bg-ink-900 text-white dark:bg-text dark:text-ink-950' : 'bg-paper-200 text-muted',
               )}
               aria-current={i === step ? 'step' : undefined}
             >
@@ -179,7 +179,7 @@ export function ContactWizard({ initialIntent }: { initialIntent?: Intent | null
               </div>
               <div className="sm:col-span-2">
                 <label className="flex items-start gap-3 text-sm text-muted">
-                  <input id={`${uid}-consent`} type="checkbox" checked={form.consent} onChange={set('consent')} className="mt-1 h-4 w-4 accent-[#0038ff]" aria-invalid={!!errors.consent} aria-describedby={errors.consent ? `${uid}-consent-err` : undefined} />
+                  <input id={`${uid}-consent`} type="checkbox" checked={form.consent} onChange={set('consent')} className="mt-1 h-4 w-4 accent-accent-500" aria-invalid={!!errors.consent} aria-describedby={errors.consent ? `${uid}-consent-err` : undefined} />
                   <span>
                     I agree to be contacted about my enquiry and have read the{' '}
                     <a href="/privacy-policy" className="text-accent-700 underline underline-offset-2">privacy policy</a>. We do not sell your information to marketing lists.

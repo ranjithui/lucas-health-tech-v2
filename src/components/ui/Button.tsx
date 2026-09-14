@@ -10,15 +10,16 @@ type Size = 'sm' | 'md' | 'lg'
 const base =
   'group relative inline-flex items-center justify-center gap-2 rounded-full font-sans text-[14px] font-medium tracking-[-0.005em] whitespace-nowrap transition-[background-color,color,box-shadow,border-color] duration-300 ease-[cubic-bezier(.16,1,.3,1)] disabled:opacity-50 disabled:pointer-events-none select-none'
 
-/* Primary carries the sky blue of the brand's azure sections; navy is the
-   executive secondary. Each variant declares its own hover and active state so
-   interaction is consistent. */
+/* Primary is navy with white text on the light theme and brand blue on dark
+   (the `primary` token flips). Secondary is the brand blue in both. Inverse is
+   the white button for navy grounds. Each variant declares its own hover and
+   active state so interaction is consistent; hover is a shade, never a glow. */
 const variants: Record<Variant, string> = {
-  primary: 'bg-azure-500 text-white hover:bg-accent-hover active:bg-accent-active',
-  secondary: 'bg-ink-900 text-white hover:bg-ink-700 active:bg-ink-950 dark:bg-ink-700 dark:hover:bg-ink-600 dark:active:bg-ink-800',
-  inverse: 'bg-white text-[#000321] hover:bg-[#eaeef4] active:bg-[#dce3ec]',
+  primary: 'bg-primary text-white hover:bg-primary-hover active:bg-primary-active',
+  secondary: 'bg-accent-500 text-white hover:bg-accent-hover active:bg-accent-active',
+  inverse: 'bg-white text-ink-900 hover:bg-paper-200 active:bg-paper-300 dark:hover:bg-[#e6edf1] dark:active:bg-[#d8e1e6]',
   ghost: 'bg-transparent text-current hover:text-accent-600 active:text-accent-700',
-  outline: 'bg-transparent border border-current/20 text-current hover:border-current/50 active:border-current/70',
+  outline: 'bg-transparent border border-current/25 text-current hover:border-current/60 hover:bg-current/[0.04] active:border-current/80',
 }
 
 const sizes: Record<Size, string> = {

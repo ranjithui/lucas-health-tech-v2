@@ -25,7 +25,7 @@ export default function Contact() {
           <ContactWizard initialIntent={intent} />
 
           <aside className="space-y-4 lg:pt-4">
-            <div className="rounded-3xl border border-paper-300 bg-surface p-6 shadow-soft">
+            <div className="rounded-2xl border border-paper-300 bg-surface p-6 shadow-soft">
               <h2 className="font-display text-lg font-medium text-text">Prefer to talk?</h2>
               <ul className="mt-4 space-y-4 text-sm">
                 <li className="flex items-start gap-3">
@@ -55,7 +55,7 @@ export default function Contact() {
                 </li>
               </ul>
             </div>
-            <div className="rounded-3xl bg-ink-900 p-6 text-white">
+            <div className="rounded-2xl bg-ink-900 p-6 text-white">
               <div className="eyebrow-dark">Privacy</div>
               <p className="mt-3 text-sm leading-relaxed text-muted-dark">
                 We only collect what we need to respond: your name, company, email, phone, and requirement. We do not sell your information to marketing lists, and we ask that you do not share patient or medical information in this form.

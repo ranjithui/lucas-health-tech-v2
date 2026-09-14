@@ -7,7 +7,13 @@ import { cn } from '../../utils/cn'
 const W = 1000
 const H = 420
 
-/** Interactive SVG ecosystem: Patients → Providers → Technology → Data → Operations → Outcomes. */
+/**
+ * Interactive SVG ecosystem: Patients → Providers → Technology → Data → Operations → Outcomes.
+ *
+ * Follows the page theme: every colour is a `var(--color-*)` token so the graph
+ * re-skins itself when the theme flips. Idle links are hairlines, the active
+ * path runs brand blue → teal, and unrelated nodes dim through opacity only.
+ */
 export function EcosystemGraph() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.35 })
@@ -23,12 +29,12 @@ export function EcosystemGraph() {
   return (
     <div ref={ref} className="grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-center">
       <p className="sr-only">Ecosystem: Patients, Providers, Technology, Data, Operations, and Outcomes are connected. Select a node to read its capabilities.</p>
-      <div className="relative hidden overflow-hidden rounded-3xl border border-white/10 bg-ink-800/60 p-4 grid-bg sm:block sm:p-6">
+      <div className="relative hidden overflow-hidden rounded-2xl border border-paper-300 bg-surface p-4 shadow-soft grid-bg-light sm:block sm:p-6">
         <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" role="group" aria-label="Healthcare ecosystem map">
           <defs>
             <linearGradient id="eco-link" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stopColor="#0038ff" stopOpacity="0.9" />
-              <stop offset="1" stopColor="#ff6240" stopOpacity="0.7" />
+              <stop offset="0" style={{ stopColor: 'var(--color-accent-500)', stopOpacity: 0.95 }} />
+              <stop offset="1" style={{ stopColor: 'var(--color-accent-400)', stopOpacity: 0.85 }} />
             </linearGradient>
             <filter id="eco-glow">
               <feGaussianBlur stdDeviation="6" result="b" />
@@ -50,7 +56,7 @@ export function EcosystemGraph() {
                 <motion.path
                   d={d}
                   fill="none"
-                  stroke={isActive ? 'url(#eco-link)' : 'rgba(154,164,177,0.28)'}
+                  stroke={isActive ? 'url(#eco-link)' : 'var(--color-paper-300)'}
                   strokeWidth={isActive ? 2.2 : 1.2}
                   strokeLinecap="round"
                   initial={reduced ? { pathLength: 1 } : { pathLength: 0, opacity: 0 }}
@@ -58,7 +64,7 @@ export function EcosystemGraph() {
                   transition={{ duration: 1.1, delay: 0.12 * i, ease: [0.16, 1, 0.3, 1] }}
                 />
                 {isActive && !reduced && (
-                  <circle r={4} fill="#7d9bff" filter="url(#eco-glow)">
+                  <circle r={4} fill="var(--color-accent-400)" filter="url(#eco-glow)">
                     <animateMotion dur={`${2.4 + i * 0.3}s`} repeatCount="indefinite" path={d} />
                   </circle>
                 )}
@@ -90,16 +96,41 @@ export function EcosystemGraph() {
                 }}
               >
                 {isSel && (
-                  <circle cx={p.x} cy={p.y} r={30} fill="none" stroke="#0038ff" strokeOpacity={0.5}>
+                  <circle cx={p.x} cy={p.y} r={30} fill="none" stroke="var(--color-accent-500)" strokeOpacity={0.5}>
                     {!reduced && <animate attributeName="r" values="22;40" dur="1.8s" repeatCount="indefinite" />}
                     {!reduced && <animate attributeName="stroke-opacity" values="0.6;0" dur="1.8s" repeatCount="indefinite" />}
                   </circle>
                 )}
-                <circle cx={p.x} cy={p.y} r={22} fill={isSel ? '#0038ff' : '#080d2e'} stroke={isSel ? '#7d9bff' : dim ? 'rgba(136, 147, 168,0.3)' : '#0038ff'} strokeWidth={2} opacity={dim ? 0.55 : 1} />
-                <text x={p.x} y={p.y + 4} textAnchor="middle" fontSize={11} fontFamily="ui-monospace, monospace" fill={isSel ? '#000321' : '#eaeef4'} opacity={dim ? 0.7 : 1}>
+                <circle
+                  cx={p.x}
+                  cy={p.y}
+                  r={22}
+                  fill={isSel ? 'var(--color-accent-500)' : 'var(--color-surface)'}
+                  stroke={isSel ? 'var(--color-accent-400)' : 'var(--color-accent-500)'}
+                  strokeWidth={2}
+                  opacity={dim ? 0.45 : 1}
+                />
+                <text
+                  x={p.x}
+                  y={p.y + 4}
+                  textAnchor="middle"
+                  fontSize={11}
+                  fontFamily="ui-monospace, monospace"
+                  fill={isSel ? '#fff' : 'var(--color-accent-600)'}
+                  opacity={dim ? 0.6 : 1}
+                >
                   {String(i + 1).padStart(2, '0')}
                 </text>
-                <text x={p.x} y={p.y + 44} textAnchor="middle" fontSize={13} fontWeight={600} fontFamily="Manrope, Inter, sans-serif" fill={dim ? 'rgba(232,236,240,0.5)' : '#fff'}>
+                <text
+                  x={p.x}
+                  y={p.y + 44}
+                  textAnchor="middle"
+                  fontSize={13}
+                  fontWeight={600}
+                  fontFamily="Manrope, Inter, sans-serif"
+                  fill="var(--color-text)"
+                  opacity={dim ? 0.5 : 1}
+                >
                   {n.label}
                 </text>
               </motion.g>
@@ -116,16 +147,16 @@ export function EcosystemGraph() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="glass rounded-3xl p-6 sm:p-8"
+            className="rounded-2xl border border-paper-300 bg-surface p-6 shadow-soft sm:p-8"
             aria-live="polite"
           >
-            <div className="eyebrow-dark mb-3">{selected.short}</div>
-            <h3 className="font-display text-2xl text-white">{selected.label}</h3>
-            <p className="mt-3 text-[15px] leading-relaxed text-muted-dark">{selected.description}</p>
+            <div className="eyebrow mb-3">{selected.short}</div>
+            <h3 className="font-display text-2xl text-text">{selected.label}</h3>
+            <p className="mt-3 text-[15px] leading-relaxed text-muted">{selected.description}</p>
             <ul className="mt-5 space-y-2">
               {selected.capabilities.map((c) => (
-                <li key={c} className="flex items-start gap-2.5 text-sm text-white/85">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-400" aria-hidden />
+                <li key={c} className="flex items-start gap-2.5 text-sm text-text/85">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" aria-hidden />
                   {c}
                 </li>
               ))}
@@ -141,7 +172,7 @@ export function EcosystemGraph() {
               onClick={() => setSelected(n)}
               className={cn(
                 'rounded-full border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition',
-                n.id === selected.id ? 'border-accent-400 bg-accent-500/15 text-accent-300' : 'border-white/12 text-white/60 hover:border-white/30 hover:text-white',
+                n.id === selected.id ? 'border-accent-500 bg-accent-500/10 text-accent-600' : 'border-paper-300 text-muted hover:border-accent-500/40 hover:text-text',
               )}
             >
               {n.label}

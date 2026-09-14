@@ -22,7 +22,7 @@ export function ClosingCta() {
       <div
         aria-hidden
         className="absolute inset-0 hidden dark:block"
-        style={{ background: 'radial-gradient(60% 60% at 50% 100%, rgba(0, 56, 255, 0.16), transparent 65%)' }}
+        style={{ background: 'radial-gradient(60% 60% at 50% 100%, rgba(23, 107, 135, 0.16), transparent 65%)' }}
       />
       <motion.div variants={stagger(0.1)} initial="hidden" whileInView="show" viewport={viewportOnce} className="container-x relative text-center">
         <motion.h2 variants={fadeUp} className="mx-auto max-w-3xl text-balance font-display text-[clamp(2.2rem,4.8vw,3.8rem)] leading-[1.06] tracking-[-0.025em]">

@@ -17,7 +17,9 @@ export function Positioning() {
             {positioningV2.statement}
           </motion.h2>
 
-          <motion.p variants={fadeUp} className="mt-10 max-w-2xl text-pretty lead">
+          <motion.span variants={fadeUp} className="rule-gold mt-8 block" aria-hidden />
+
+          <motion.p variants={fadeUp} className="mt-8 max-w-2xl text-pretty lead">
             {positioningV2.statementBody}
           </motion.p>
 

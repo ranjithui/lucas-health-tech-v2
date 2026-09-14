@@ -41,17 +41,17 @@ export default function Insights() {
           <label htmlFor="insights-search" className="sr-only">
             Search insights
           </label>
-          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" aria-hidden />
+          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden />
           <input
             id="insights-search"
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search articles, topics, technologies…"
-            className="glass h-13 w-full rounded-full py-3.5 pl-11 pr-11 text-[15px] text-white outline-none placeholder:text-white/40 focus:border-accent-400"
+            className="h-13 w-full rounded-full border border-paper-300 bg-surface py-3.5 pl-11 pr-11 text-[15px] text-text shadow-soft outline-none transition placeholder:text-muted focus:border-accent-500"
           />
           {q && (
-            <button type="button" onClick={() => setQ('')} aria-label="Clear search" className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-white/60 hover:text-white">
+            <button type="button" onClick={() => setQ('')} aria-label="Clear search" className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-muted hover:text-text">
               <X className="h-4 w-4" />
             </button>
           )}
@@ -73,7 +73,7 @@ export default function Insights() {
           </div>
 
           {featured && (
-            <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="group relative mt-10 grid overflow-hidden rounded-[2rem] border border-white/10 bg-ink-900 text-white shadow-lift lg:grid-cols-[1.2fr_1fr]">
+            <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="group relative mt-10 grid overflow-hidden rounded-2xl border border-white/10 bg-ink-900 text-white shadow-lift lg:grid-cols-[1.2fr_1fr]">
               <div className="relative p-8 sm:p-12">
                 <div aria-hidden className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-accent-500/20 blur-3xl" />
                 <span className="eyebrow-dark relative">Featured · {featured.category}</span>
@@ -174,11 +174,11 @@ export function EditorialArt({ seed }: { seed: number }) {
     <svg viewBox="0 0 400 400" className="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid slice" aria-hidden>
       <defs>
         <radialGradient id={`ea-${seed}`} cx="50%" cy="50%" r="60%">
-          <stop offset="0" stopColor="#0038ff" stopOpacity="0.5" />
-          <stop offset="1" stopColor="#0038ff" stopOpacity="0" />
+          <stop offset="0" style={{ stopColor: 'var(--color-accent-500)', stopOpacity: 0.55 }} />
+          <stop offset="1" style={{ stopColor: 'var(--color-accent-500)', stopOpacity: 0 }} />
         </radialGradient>
       </defs>
-      <rect width="400" height="400" fill="#000321" />
+      <rect width="400" height="400" fill="var(--color-ink-900)" />
       <circle cx="220" cy="200" r="170" fill={`url(#ea-${seed})`} />
       {Array.from({ length: 9 }).map((_, i) => (
         <circle key={i} cx={200} cy={200} r={30 + i * 22} fill="none" stroke="rgba(255,255,255,0.07)" strokeDasharray={`${4 + i * 2} ${8 + i * 3}`} />
@@ -186,7 +186,7 @@ export function EditorialArt({ seed }: { seed: number }) {
       {Array.from({ length: 12 }).map((_, i) => {
         const a = (i / 12) * Math.PI * 2 + seed
         const r = 90 + (i % 3) * 45
-        return <circle key={`p${i}`} cx={200 + Math.cos(a) * r} cy={200 + Math.sin(a) * r} r={i % 4 === 0 ? 5 : 3} fill={i % 5 === 0 ? '#ff6240' : '#0038ff'} />
+        return <circle key={`p${i}`} cx={200 + Math.cos(a) * r} cy={200 + Math.sin(a) * r} r={i % 4 === 0 ? 5 : 3} fill={i % 5 === 0 ? 'var(--color-gold-500)' : 'var(--color-accent-400)'} />
       })}
     </svg>
   )

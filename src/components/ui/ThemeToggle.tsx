@@ -13,7 +13,7 @@ const OPTIONS: { value: Theme; label: string; Icon: typeof Sun }[] = [
  * readable at a glance. The selected pill slides between them with the same
  * layout transition the primary nav uses. `light` = sitting on a dark ground.
  *
- * The pill is the brand sky blue in both themes on purpose: a neutral pill has
+ * The pill is the brand blue in both themes on purpose: a neutral pill has
  * to be darker than its track in one theme and lighter in the other, and the
  * losing case reads as nothing selected at all.
  */
@@ -49,7 +49,7 @@ export function ThemeToggle({ light, className }: { light?: boolean; className?:
             {on && (
               <motion.span
                 layoutId="theme-pill"
-                className="absolute inset-0 rounded-full bg-azure-500"
+                className="absolute inset-0 rounded-full bg-accent-500"
                 transition={{ type: 'spring', stiffness: 420, damping: 34 }}
               />
             )}

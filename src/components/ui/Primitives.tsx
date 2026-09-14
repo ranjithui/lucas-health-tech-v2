@@ -33,7 +33,7 @@ export function Eyebrow({
 }) {
   return (
     <span className={cn('inline-flex items-center gap-3', onAccent ? 'eyebrow-accent' : dark ? 'eyebrow-dark' : 'eyebrow', className)}>
-      <span className={cn('h-px w-6', onAccent ? 'bg-white/60' : dark ? 'bg-accent-400/50' : 'bg-accent-600/40')} aria-hidden />
+      <span className={cn('h-px w-6', onAccent ? 'bg-gold-400/80' : dark ? 'bg-gold-500/70' : 'bg-gold-500/80')} aria-hidden />
       {children}
     </span>
   )

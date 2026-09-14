@@ -28,7 +28,7 @@ export function IntelligencePipeline() {
         {!reduced && (
           <motion.div
             aria-hidden
-            className="absolute left-[19px] top-6 w-px bg-gradient-to-b from-accent-500 via-accent-400 to-signal-500"
+            className="absolute left-[19px] top-6 w-px bg-gradient-to-b from-accent-500 via-accent-400 to-gold-500"
             initial={{ height: 0 }}
             animate={{ height: `${(active / (intelligencePipeline.length - 1)) * 100}%` }}
             style={{ maxHeight: 'calc(100% - 3rem)' }}
@@ -69,7 +69,7 @@ export function IntelligencePipeline() {
       </ol>
 
       {/* Interface panel */}
-      <div className="glass relative overflow-hidden rounded-3xl p-6 sm:p-8">
+      <div className="glass relative overflow-hidden rounded-2xl p-6 sm:p-8">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-accent-400" aria-hidden />

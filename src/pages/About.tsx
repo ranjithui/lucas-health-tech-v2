@@ -76,6 +76,7 @@ export default function About() {
           </motion.div>
 
           <motion.div variants={stagger(0.1)} initial="hidden" whileInView="show" viewport={viewportOnce}>
+            <motion.span variants={fadeUp} className="rule-gold mb-8 block" aria-hidden />
             <motion.blockquote variants={fadeUp} className="font-display text-[clamp(1.5rem,2.6vw,2.05rem)] leading-[1.35] tracking-[-0.015em] text-text">
               {founder.quote}
             </motion.blockquote>

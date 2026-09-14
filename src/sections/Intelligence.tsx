@@ -6,7 +6,7 @@ import { fadeUp, stagger, viewportOnce } from '../animations/variants'
 
 export function Intelligence() {
   return (
-    <Section id="intelligence" dark className="border-t border-white/5 bg-ink-950">
+    <Section id="intelligence" dark className="border-t border-white/5 bg-ink-950 dark:bg-ink-900">
       <div className="container-x">
         <SectionHeading
           eyebrow="AI & Automation"

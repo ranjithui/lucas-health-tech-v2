@@ -104,7 +104,7 @@ export default function InsightArticle() {
           <div className="container-x grid gap-12 lg:grid-cols-[1fr_300px]">
             <div className="prose-lht max-w-3xl">{renderBody(article.body)}</div>
             <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
-              <div className="rounded-3xl border border-paper-300 bg-surface p-6 shadow-soft">
+              <div className="rounded-2xl border border-paper-300 bg-surface p-6 shadow-soft">
                 <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Topics</div>
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {article.tags.map((t) => (
@@ -114,7 +114,7 @@ export default function InsightArticle() {
                   ))}
                 </div>
               </div>
-              <div className="rounded-3xl bg-ink-900 p-6 text-white">
+              <div className="rounded-2xl bg-ink-900 p-6 text-white">
                 <div className="eyebrow-dark">Talk to an expert</div>
                 <p className="mt-3 text-sm text-muted-dark">Discuss how this applies to your organization.</p>
                 <Button to="/contact?intent=consultation" size="sm" icon variant="inverse" className="mt-4">
@@ -131,7 +131,7 @@ export default function InsightArticle() {
               <h2 className="display-md text-text">Related insights</h2>
               <div className="mt-8 grid gap-5 md:grid-cols-3">
                 {related.map((r) => (
-                  <article key={r.slug} className="group relative rounded-3xl border border-paper-300 bg-surface p-6 shadow-soft transition-all duration-500 hover:-translate-y-0.5 hover:shadow-lift">
+                  <article key={r.slug} className="group relative rounded-2xl border border-paper-300 bg-surface p-6 shadow-soft transition-all duration-500 hover:-translate-y-0.5 hover:shadow-lift">
                     <span className="eyebrow">{r.category}</span>
                     <h3 className="mt-2 font-display text-lg font-medium leading-snug text-text">
                       <Link to={`/insights/${r.slug}`} className="after:absolute after:inset-0">

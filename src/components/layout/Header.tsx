@@ -57,7 +57,7 @@ export function Header({ overHero }: { overHero: boolean }) {
             ? 'border-b border-transparent bg-transparent'
             : open
               ? 'border-b border-white/8 bg-ink-950'
-              : 'glass-light border-b border-black/[0.06] dark:border-white/[0.08]',
+              : 'glass-light border-b border-paper-300',
         )}
       >
         <div className={cn('container-x flex items-center justify-between transition-all duration-500', scrolled ? 'h-[64px]' : 'h-[92px]')}>

@@ -24,7 +24,7 @@ export function WhyLHT() {
         <div ref={ref} className="mt-14 grid gap-10 lg:grid-cols-[1fr_1.1fr]">
           {/* Sticky visual */}
           <div className="lg:sticky lg:top-28 lg:self-start">
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-ink-900 p-8 text-white grid-bg">
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-ink-900 p-8 text-white grid-bg dark:bg-ink-800">
               <div aria-hidden className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent-500/20 blur-3xl" />
               <ol className="relative space-y-3">
                 {differentiators.map((d, i) => {
@@ -32,7 +32,7 @@ export function WhyLHT() {
                   return (
                     <li key={d.step} className="flex items-center gap-4">
                       <motion.span
-                        animate={{ scale: on ? 1 : 0.9, backgroundColor: on ? '#0038ff' : 'rgba(255,255,255,0.06)', color: on ? '#000321' : 'rgba(255,255,255,0.6)' }}
+                        animate={{ scale: on ? 1 : 0.9, backgroundColor: on ? '#176B87' : 'rgba(255,255,255,0.06)', color: on ? '#F7FAFC' : 'rgba(255,255,255,0.6)' }}
                         transition={{ duration: 0.4 }}
                         className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 font-mono text-[10.5px]"
                       >
@@ -44,7 +44,7 @@ export function WhyLHT() {
                         </motion.div>
                         {i < differentiators.length - 1 && <span className="absolute -left-[26px] top-9 h-4 w-px bg-white/15" aria-hidden />}
                       </div>
-                      {on && !reduced && <motion.span layoutId="why-dot" className="h-2 w-2 rounded-full bg-signal-500" />}
+                      {on && !reduced && <motion.span layoutId="why-dot" className="h-2 w-2 rounded-full bg-gold-500" />}
                     </li>
                   )
                 })}
@@ -67,7 +67,7 @@ export function WhyLHT() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className={cn('rounded-3xl border bg-surface p-6 shadow-soft transition-colors duration-500 sm:p-8', i === active ? 'border-accent-500/60' : 'border-paper-300')}
+                className={cn('rounded-2xl border bg-surface p-6 shadow-soft transition-colors duration-500 sm:p-8', i === active ? 'border-accent-500/60' : 'border-paper-300')}
               >
                 <span className="font-mono text-[11px] tracking-[0.22em] text-accent-600">{d.step}</span>
                 <h3 className="mt-2 font-display text-2xl text-text">{d.title}</h3>

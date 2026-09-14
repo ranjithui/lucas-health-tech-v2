@@ -12,9 +12,9 @@ import { cn } from '../../utils/cn'
  * Capability explorer. Names on the left, a dynamic panel on the right.
  * Titles and one-liners only — every description lives on the Solutions page.
  *
- * On the azure brand field, same as the CTA and footer. Nothing here can use an
- * accent blue: against #2876E7 accent-400 measures 1.02:1 and accent-300 1.66:1,
- * so emphasis is carried by pure white against white at 65–80%.
+ * On the navy brand field (#0B1F33, `bg-field`), same as the CTA and footer. The
+ * field never changes with the theme, so emphasis is carried by pure white against
+ * white at 65–80%; `accent-300` and `gold-500` are the only tints allowed here.
  */
 export function Capabilities() {
   const [activeId, setActiveId] = useState(solutions[0].id)

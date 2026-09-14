@@ -22,10 +22,10 @@ const headline = positioningV2.headline.split(' ')
  */
 const TREATMENT = {
   dark: {
-    section: 'bg-ink-900 text-white',
-    grid: 'grid-bg opacity-70',
+    section: 'bg-ink-950 text-white',
+    grid: 'grid-bg opacity-60',
     bloom:
-      'radial-gradient(70% 55% at 78% 28%, rgba(0, 56, 255, 0.14), transparent 62%), radial-gradient(50% 45% at 8% 88%, rgba(0, 56, 255, 0.07), transparent 60%)',
+      'radial-gradient(70% 55% at 78% 28%, rgba(23, 107, 135, 0.22), transparent 62%), radial-gradient(50% 45% at 8% 88%, rgba(58, 157, 181, 0.08), transparent 60%)',
     eyebrow: 'text-accent-300',
     accentWord: 'text-accent-300',
     lead: 'text-muted-dark',
@@ -38,7 +38,7 @@ const TREATMENT = {
     section: 'bg-silver-100 text-text',
     grid: 'grid-bg-light opacity-60',
     bloom:
-      'radial-gradient(70% 55% at 78% 28%, rgba(0, 56, 255, 0.10), transparent 62%), radial-gradient(58% 50% at 6% 86%, rgba(255, 255, 255, 0.85), transparent 64%)',
+      'radial-gradient(70% 55% at 78% 28%, rgba(58, 157, 181, 0.14), transparent 62%), radial-gradient(58% 50% at 6% 86%, rgba(255, 255, 255, 0.85), transparent 64%)',
     eyebrow: 'text-accent-600',
     accentWord: 'text-accent-500',
     lead: 'text-muted',

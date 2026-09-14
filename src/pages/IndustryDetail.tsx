@@ -39,7 +39,7 @@ export default function IndustryDetail() {
             <motion.ul variants={fadeUp} className="mt-8 space-y-4">
               {industry.needs.map((n) => (
                 <li key={n} className="flex items-start gap-3 border-b border-paper-300 pb-4 text-[16px] text-text/90">
-                  <Check className="mt-1 h-4 w-4 shrink-0 text-signal-500" aria-hidden />
+                  <Check className="mt-1 h-4 w-4 shrink-0 text-gold-500" aria-hidden />
                   {n}
                 </li>
               ))}

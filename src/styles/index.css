@@ -3,149 +3,155 @@
 /*
  * Lucas Health Tech — Version 2 design system.
  *
- * Palette is the live lucashealthtech.com brand, evolved rather than replaced.
- * The six colors published on the current site are the anchors:
- *   #000321 deep navy · #0038FF brand blue · #FF6240 coral
- *   #565A7C indigo-slate · #8893A8 slate · #C9D8E0 pale blue-gray
- * Each anchor is kept exactly and extended into a tonal ramp so the system can
- * hold contrast at both ends without inventing a new hue.
+ * Premium healthcare × clinical intelligence × enterprise technology × executive
+ * strategy. One brand, two grounds. The anchors:
+ *   #0B1F33 deep navy · #176B87 brand blue · #3A9DB5 teal · #C9A45C warm gold
+ *   #F7F9FA warm white · #EAF1F4 soft blue-gray · #17232D charcoal · #65727D slate
+ *   dark: #071521 ground · #0B1F33 secondary · #102B3D surface · #294454 border
  *
- * Distribution target: ~70% neutral ground, ~20% brand navy/blue, ~10% accent.
- * Editorial serif display over a precise grotesk. Token names are kept stable
- * from Version 1 so shared components re-skin without being rewritten.
+ * Distribution: ~70% neutral ground, ~20% navy / brand blue, ~8% teal, ~2% gold.
+ * Gold is a detail colour only — rules, active marks, small emphasis. Never a fill.
+ *
+ * Token names are stable so components re-skin without rewrites. Only the
+ * ground-dependent tokens move between themes; brand colours are identical in
+ * both, so the two themes read as the same company in two lighting conditions.
  */
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Editorial serif for display, grotesk for interface, mono for labels. */
-  --font-display: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
-  --font-sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Manrope for display, Inter for interface, JetBrains Mono for small labels. */
+  --font-display: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-  /* Executive dark — LHT navy #000321, ramped up toward brand slate #565A7C. */
-  --color-ink-950: #00020f;
-  --color-ink-900: #000321;
-  --color-ink-800: #080d2e;
-  --color-ink-700: #13193d;
-  --color-ink-600: #222951;
-  --color-ink-500: #383f66;
+  /* Executive navy wells. These stay dark in BOTH themes — on the dark theme
+     they sit a step above the #071521 ground so the section rhythm survives. */
+  --color-ink-950: #071521;
+  --color-ink-900: #0b1f33;
+  --color-ink-800: #102b3d;
+  --color-ink-700: #163a50;
+  --color-ink-600: #1e4a63;
+  --color-ink-500: #294454;
 
-  /* Off-white ground, cooled toward the brand's pale blue-gray #C9D8E0. Never pure white. */
-  --color-paper-50: #fcfdfe;
-  --color-paper-100: #f5f7fa;
-  --color-paper-200: #eaeef4;
-  --color-paper-300: #dce3ec;
+  /* Warm-white ground. paper-50 is the raised tier, paper-300 the hairline. */
+  --color-paper-50: #ffffff;
+  --color-paper-100: #f7f9fa;
+  --color-paper-200: #eaf1f4;
+  --color-paper-300: #d8e1e6;
 
-  /* Text scale — brand navy for copy, brand slates for support. */
-  --color-text: #000321;
-  --color-muted: #565a7c;
-  --color-muted-dark: #8893a8;
+  /* Text scale — charcoal for copy, slate for support. muted-dark is the
+     secondary text on navy grounds in either theme. */
+  --color-text: #17232d;
+  --color-muted: #65727d;
+  --color-muted-dark: #a9bac5;
 
-  /* Primary brand blue #0038FF, darkened for small text, lightened for dark grounds. */
-  --color-accent-300: #7d9bff;
-  --color-accent-400: #4a6dff;
-  --color-accent-500: #0038ff;
-  --color-accent-600: #002dcc;
-  --color-accent-700: #00229b;
+  /* Brand blue #176B87 and teal #3A9DB5. 500 is the fill; 600/700 are the accent
+     TEXT tier (dark enough for small type on light grounds); 300/400 are the
+     teal tier used on navy grounds and for motion. */
+  --color-accent-300: #7fc4d6;
+  --color-accent-400: #3a9db5;
+  --color-accent-500: #176b87;
+  --color-accent-600: #125a72;
+  --color-accent-700: #0e4759;
 
-  /* Raised opaque card surface. White on the light theme, a lifted navy on dark. */
+  /* Primary-fill interaction states. Darken in both themes. */
+  --color-accent-hover: #125a72;
+  --color-accent-active: #0e4759;
+
+  /* Primary button fill: navy on the light theme, brand blue on dark. */
+  --color-primary: #0b1f33;
+  --color-primary-hover: #163a50;
+  --color-primary-active: #071521;
+
+  /* Warm gold — the premium 2%. */
+  --color-gold-400: #d9bb7a;
+  --color-gold-500: #c9a45c;
+  --color-gold-600: #a8863f;
+
+  /* Legacy name for the supporting accent; now the same gold. */
+  --color-signal-400: #d9bb7a;
+  --color-signal-500: #c9a45c;
+  --color-signal-600: #a8863f;
+
+  /* Raised opaque card surface. */
   --color-surface: #ffffff;
 
-  /* The live site's footer/CTA blue (its --color-ltxuylyt). A mid-tone field, so
-     everything on it is pure white — the white/35..white/70 scale used on the
-     navy grounds drops to 1.7–2.9:1 here and must not be reused. */
-  --color-azure-500: #2876e7;
-  --color-azure-600: #1f62c4;
-  --color-azure-700: #1a54a8;
+  /* Legacy azure ramp now resolves to the brand blue ramp. */
+  --color-azure-500: #176b87;
+  --color-azure-600: #125a72;
+  --color-azure-700: #0e4759;
 
-  /* The brand field the What-we-do, CTA and footer bands sit on: sky blue on
-     the light theme, navy on dark — three sky-blue bands turned dark mode into
-     one colour. Everything on it is white, which reads on either ground. */
-  --color-field: #2876e7;
+  /* The full-width brand band (What-we-do, closing CTA, footer). Navy in both
+     themes; everything placed on it is white, accent-300 or gold. */
+  --color-field: #0b1f33;
 
-  /* Apple's silver-white, used for the light-theme hero ground. Deliberately
-     neutral — a hair warmer than paper-100's blue-white — so the hero reads as
-     its own surface rather than as more page. */
-  --color-silver-100: #f5f5f7;
+  /* Hero ground. The brief's warm white on light, the deep ground on dark. */
+  --color-silver-100: #f7f9fa;
 
-  /* Pale sky bands, from the brand's #C9D8E0 lineage. These carry the unhurried,
-     airy feeling of the current site — used for whole sections, never for text. */
-  --color-mist-50: #f2f8fd;
-  --color-mist-100: #e7f2fc;
-  --color-mist-200: #d8eafb;
-
-  /* Primary-fill interaction states. These darken in both themes: the primary
-     button sits on light, azure and navy grounds, so the hover direction has to
-     be a property of the button rather than of the theme. */
-  --color-accent-hover: #1f62c4;
-  --color-accent-active: #1a54a8;
-
-  /* Secondary brand coral #FF6240 — supporting states only, never a second accent. */
-  --color-signal-400: #ff8b72;
-  --color-signal-500: #ff6240;
-  --color-signal-600: #e04524;
+  /* Pale bands — whole sections, never text. */
+  --color-mist-50: #f2f6f8;
+  --color-mist-100: #eaf1f4;
+  --color-mist-200: #dde7ec;
 
   --radius-2xl: 1.25rem;
   --radius-3xl: 1.5rem;
   --radius-4xl: 2rem;
 
-  --shadow-soft: 0 1px 2px rgba(0, 3, 33, 0.03), 0 8px 24px -12px rgba(0, 3, 33, 0.10), 0 24px 48px -28px rgba(0, 56, 255, 0.10);
-  --shadow-lift: 0 2px 4px rgba(0, 3, 33, 0.04), 0 18px 40px -16px rgba(0, 3, 33, 0.14), 0 40px 72px -36px rgba(0, 56, 255, 0.16);
-  --shadow-glow: 0 0 0 1px rgba(0, 56, 255, 0.18), 0 24px 64px -24px rgba(0, 56, 255, 0.32);
+  --shadow-soft: 0 1px 2px rgba(11, 31, 51, 0.04), 0 8px 24px -12px rgba(11, 31, 51, 0.12), 0 24px 48px -28px rgba(23, 107, 135, 0.12);
+  --shadow-lift: 0 2px 4px rgba(11, 31, 51, 0.05), 0 18px 40px -16px rgba(11, 31, 51, 0.16), 0 40px 72px -36px rgba(23, 107, 135, 0.18);
+  --shadow-glow: 0 0 0 1px rgba(23, 107, 135, 0.18), 0 24px 64px -24px rgba(23, 107, 135, 0.28);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 /*
- * Dark theme. Only the ground-dependent tokens move: `paper` becomes the navy
- * field, `text`/`muted` invert, and the `ink` bands lift ABOVE the ground rather
- * than sinking below it, so the section rhythm of the light theme survives.
- * The brand blue, coral, and the logo's own colors are identical in both themes.
+ * Dark theme. Only the ground-dependent tokens move: `paper` becomes the deep
+ * navy ground, `text`/`muted` invert, surfaces lift to #102B3D, and the accent
+ * text tier lightens to teal. Brand blue, gold and the logo's own colours are
+ * identical in both themes. Never pure black.
  */
 .dark {
-  /* Ground. paper-50 stays the raised tier, paper-300 stays the hairline. */
-  --color-paper-50: #0c1338;
-  --color-paper-100: #04081c;
-  --color-paper-200: #080e28;
-  --color-paper-300: #1c2350;
+  --color-paper-50: #102b3d;
+  --color-paper-100: #071521;
+  --color-paper-200: #0b1f33;
+  --color-paper-300: #294454;
 
-  --color-surface: #0e1540;
+  --color-surface: #102b3d;
 
-  --color-field: #0a1030;
+  --color-field: #0b1f33;
+  --color-silver-100: #071521;
 
-  /* The pale bands become quiet lifted navy — same role, same rhythm. */
-  --color-mist-50: #070d22;
-  --color-mist-100: #0a1130;
-  --color-mist-200: #0e163c;
+  --color-mist-50: #091a29;
+  --color-mist-100: #0b1f33;
+  --color-mist-200: #0e2638;
 
-  --color-text: #eef1f8;
-  --color-muted: #a3adc8;
-  --color-muted-dark: #8893a8;
+  --color-text: #f7fafc;
+  --color-muted: #a9bac5;
+  --color-muted-dark: #a9bac5;
 
-  /* Executive bands — lifted, so hero/CTA/footer still read as distinct wells. */
-  --color-ink-950: #070c24;
-  --color-ink-900: #0a1030;
-  --color-ink-800: #121a45;
-  --color-ink-700: #1b2559;
-  --color-ink-600: #26316d;
-  --color-ink-500: #3a4788;
+  /* On the dark ground the executive wells lift one step. */
+  --color-ink-950: #050f18;
 
-  /* accent-600/700 are the accent TEXT tier, not a fill ramp: on a dark ground
-     they have to lighten, so they deliberately sit above accent-500 here. The
-     fills that used to borrow them now use accent-hover/active instead. */
-  --color-accent-600: #7d9bff;
-  --color-accent-700: #a8bcff;
+  /* accent-600/700 are the accent TEXT tier: on a dark ground they lighten. */
+  --color-accent-600: #7fc4d6;
+  --color-accent-700: #a6d8e5;
 
-  /* Depth comes from the lifted surfaces, not from drop shadows. */
-  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px -14px rgba(0, 0, 0, 0.55);
-  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35), 0 28px 56px -22px rgba(0, 0, 0, 0.7);
+  /* Primary button: brand blue with white text (4.9:1). */
+  --color-primary: #176b87;
+  --color-primary-hover: #125a72;
+  --color-primary-active: #0e4759;
+
+  /* Depth comes from the lifted surfaces, not from heavy shadows. */
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.25), 0 10px 30px -14px rgba(0, 0, 0, 0.5);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.3), 0 28px 56px -22px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 0 1px rgba(127, 196, 214, 0.18), 0 24px 64px -24px rgba(23, 107, 135, 0.4);
 }
 
 @layer base {
   * { @apply border-paper-300; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; color-scheme: light; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; color-scheme: light; background: var(--color-paper-100); }
   html.dark { color-scheme: dark; }
   html:focus-within { scroll-behavior: smooth; }
   body {
@@ -153,11 +159,21 @@
     font-feature-settings: "cv02", "cv03", "cv04", "ss01";
     text-rendering: optimizeLegibility;
   }
-  h1, h2, h3, h4 { @apply font-display; font-weight: 400; letter-spacing: -0.015em; }
-  ::selection { background: rgba(0, 56, 255, 0.16); }
-  .dark ::selection { background: rgba(125, 155, 255, 0.28); }
-  :focus-visible { outline: 2px solid var(--color-accent-500); outline-offset: 3px; border-radius: 4px; }
+  h1, h2, h3, h4 { @apply font-display; font-weight: 600; letter-spacing: -0.02em; }
+  ::selection { background: rgba(23, 107, 135, 0.18); }
+  .dark ::selection { background: rgba(127, 196, 214, 0.28); }
+  :focus-visible { outline: 2px solid var(--color-accent-400); outline-offset: 3px; border-radius: 4px; }
   button, [role="button"] { cursor: pointer; }
+
+  /* Theme switch: the hook adds this class for the duration of the change so
+     colours cross-fade instead of snapping. Motion stays untouched. */
+  html.theme-transition,
+  html.theme-transition *,
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition: background-color 420ms ease, color 420ms ease, border-color 420ms ease, fill 420ms ease, stroke 420ms ease, box-shadow 420ms ease !important;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after {
@@ -173,18 +189,24 @@
   .container-x { @apply mx-auto w-full max-w-[1240px] px-6 sm:px-8 lg:px-12; }
   .container-narrow { @apply mx-auto w-full max-w-[860px] px-6 sm:px-8; }
 
+  /* Display type carries weight on its own; quotes and figures set in the
+     display face read better one step lighter than headings. */
+  .font-display { font-weight: 500; }
+  h1.font-display, h2.font-display, h3.font-display, h4.font-display { font-weight: 600; }
+
   .glass {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(20px) saturate(140%);
     -webkit-backdrop-filter: blur(20px) saturate(140%);
     border: 1px solid rgba(255, 255, 255, 0.09);
   }
+  /* Header ground on scroll: warm white translucent on light, navy on dark. */
   .glass-light {
-    background: rgba(245, 247, 250, 0.78);
+    background: rgba(247, 249, 250, 0.82);
     backdrop-filter: blur(20px) saturate(170%);
     -webkit-backdrop-filter: blur(20px) saturate(170%);
   }
-  .dark .glass-light { background: rgba(4, 8, 28, 0.72); }
+  .dark .glass-light { background: rgba(7, 21, 33, 0.78); }
 
   .grid-bg {
     background-image:
@@ -194,8 +216,8 @@
   }
   .grid-bg-light {
     background-image:
-      linear-gradient(to right, rgba(0,3,33,0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(0,3,33,0.04) 1px, transparent 1px);
+      linear-gradient(to right, rgba(11,31,51,0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(11,31,51,0.045) 1px, transparent 1px);
     background-size: 64px 64px;
   }
   .dark .grid-bg-light {
@@ -206,68 +228,69 @@
 
   .eyebrow { @apply font-mono text-[10.5px] uppercase tracking-[0.24em] text-accent-600; }
   .eyebrow-dark { @apply font-mono text-[10.5px] uppercase tracking-[0.24em] text-accent-300; }
-  /* On the azure field every accent blue falls to 1.0–1.7:1, so white it is. */
+  /* On the navy field the accent text tier is unreadable, so white it is. */
   .eyebrow-accent { @apply font-mono text-[10.5px] uppercase tracking-[0.24em] text-white; }
   .label { @apply font-mono text-[10.5px] uppercase tracking-[0.22em] text-muted; }
 
-  /* Editorial display scale — restrained weights, generous measure. */
+  /* Display scale — large but controlled, tight leading, negative tracking. */
   .display-xl {
-    @apply font-display leading-[1.02] text-[clamp(2.6rem,5.6vw,4.6rem)];
-    font-weight: 400;
-    letter-spacing: -0.025em;
+    @apply font-display leading-[1.04] text-[clamp(2.5rem,5.4vw,4.4rem)];
+    font-weight: 600;
+    letter-spacing: -0.03em;
   }
   .display-lg {
-    @apply font-display leading-[1.08] text-[clamp(2rem,4vw,3.1rem)];
-    font-weight: 400;
-    letter-spacing: -0.02em;
+    @apply font-display leading-[1.1] text-[clamp(1.9rem,3.8vw,2.95rem)];
+    font-weight: 600;
+    letter-spacing: -0.025em;
   }
   .display-md {
-    @apply font-display leading-[1.14] text-[clamp(1.5rem,2.6vw,2.05rem)];
-    font-weight: 400;
-    letter-spacing: -0.015em;
+    @apply font-display leading-[1.16] text-[clamp(1.45rem,2.5vw,1.95rem)];
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
   .display-sm {
-    @apply font-display leading-[1.2] text-[clamp(1.2rem,1.8vw,1.5rem)];
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    @apply font-display leading-[1.22] text-[clamp(1.15rem,1.7vw,1.4rem)];
+    font-weight: 600;
+    letter-spacing: -0.015em;
   }
 
   .lead { @apply text-[17px] leading-[1.65] text-muted md:text-[19px]; }
   .lead-dark { @apply text-[17px] leading-[1.65] text-muted-dark md:text-[19px]; }
 
   /*
-   * A card that stays white in BOTH themes — for the azure sections, where the
-   * ground never changes. It pins the ground-dependent tokens to their light
+   * A card that stays white in BOTH themes — for the navy field sections, where
+   * the ground never changes. It pins the ground-dependent tokens to their light
    * values inside itself, so children keep using text/muted/paper-300/accent-600
    * normally instead of hard-coding hexes that would break one theme.
    */
   .card-on-accent {
-    --color-text: #000321;
-    --color-muted: #565a7c;
-    --color-paper-300: #dce3ec;
-    --color-accent-600: #002dcc;
-    --color-accent-700: #00229b;
-    /* Pinned too, or the dark theme's much heavier shadow muddies the azure. */
-    --shadow-lift: 0 2px 4px rgba(0, 3, 33, 0.06), 0 18px 40px -16px rgba(0, 3, 33, 0.18), 0 40px 72px -36px rgba(0, 3, 33, 0.22);
-    @apply rounded-3xl bg-white shadow-lift;
+    --color-text: #17232d;
+    --color-muted: #65727d;
+    --color-paper-300: #d8e1e6;
+    --color-accent-600: #125a72;
+    --color-accent-700: #0e4759;
+    --shadow-lift: 0 2px 4px rgba(7, 21, 33, 0.12), 0 18px 40px -16px rgba(7, 21, 33, 0.35), 0 40px 72px -36px rgba(7, 21, 33, 0.4);
+    @apply rounded-2xl bg-white shadow-lift;
   }
 
   /* Calm card. Air around it and a soft lift, rather than a shared 1px seam. */
   .panel {
-    @apply rounded-2xl border border-paper-300/70 bg-surface shadow-soft;
+    @apply rounded-2xl border border-paper-300/80 bg-surface shadow-soft;
     transition: transform 500ms var(--ease-out-expo), box-shadow 500ms var(--ease-out-expo), border-color 500ms var(--ease-out-expo);
   }
-  .panel-link { @apply hover:-translate-y-[3px] hover:border-accent-500/30 hover:shadow-lift; }
+  .panel-link { @apply hover:-translate-y-[3px] hover:border-accent-500/40 hover:shadow-lift; }
 
   .rule { @apply h-px w-full bg-paper-300; }
   .rule-dark { @apply h-px w-full bg-white/10; }
+  /* A short gold rule under a statement heading — the executive mark. */
+  .rule-gold { @apply h-px w-12 bg-gold-500; }
 
   .prose-lht p { @apply text-[17px] leading-[1.75] text-muted mb-5; }
-  .prose-lht h2 { @apply font-display text-[clamp(1.5rem,2.6vw,2.05rem)] leading-[1.14] mt-12 mb-4 text-text; font-weight: 400; letter-spacing: -0.015em; }
-  .prose-lht h3 { @apply font-display text-xl mt-8 mb-3 text-text; font-weight: 500; }
+  .prose-lht h2 { @apply font-display text-[clamp(1.45rem,2.5vw,1.95rem)] leading-[1.16] mt-12 mb-4 text-text; font-weight: 600; letter-spacing: -0.02em; }
+  .prose-lht h3 { @apply font-display text-xl mt-8 mb-3 text-text; font-weight: 600; }
   .prose-lht ul { @apply list-disc pl-6 mb-5 space-y-2 text-muted text-[17px] leading-[1.7]; }
   .prose-lht strong { @apply text-text font-semibold; }
-  .prose-lht blockquote { @apply border-l border-accent-500 pl-5 text-text/80 my-6 font-display text-xl leading-relaxed; }
+  .prose-lht blockquote { @apply border-l-2 border-gold-500 pl-5 text-text/85 my-6 font-display text-xl leading-relaxed; font-weight: 500; }
 }
 
 @layer utilities {
@@ -288,33 +311,4 @@
 .animate-drift { animation: drift 9s ease-in-out infinite; }
 .animate-breathe { animation: breathe 5s ease-in-out infinite; }
 
-/*
- * Hero intelligence visual. One 3.6s cycle tells the story in two stages:
- *   stage 1 (0–34%)   the field's energy travels its ring to the four domains
- *   stage 2 (32–66%)  the domains converge into the system, which fires
- * then a short rest before it repeats. Every path carries pathLength="400", so
- * a packet is a 34-unit dash that enters at offset 34 and has left at -400 —
- * the same maths for a short stream and a long one.
- *   sv-flow — the ambient current of dashes that never stops
- *   sv-sN   — the staged packet for stage N
- *   sv-*-emit / -arrive / -fire — nodes light up as the packet reaches them
- */
-@keyframes sv-flow { to { stroke-dashoffset: -40; } }
-@keyframes sv-s1 { 0% { stroke-dashoffset: 34; animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1); } 34%, 100% { stroke-dashoffset: -400; } }
-@keyframes sv-s2 { 0%, 32% { stroke-dashoffset: 34; animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1); } 66%, 100% { stroke-dashoffset: -400; } }
-@keyframes sv-field-emit  { 0% { opacity: 0.5; transform: scale(1); } 6% { opacity: 1; transform: scale(1.14); } 20%, 100% { opacity: 0.5; transform: scale(1); } }
-@keyframes sv-node-arrive { 0%, 27% { opacity: 0.5; transform: scale(1); } 36% { opacity: 1; transform: scale(1.14); } 50%, 100% { opacity: 0.5; transform: scale(1); } }
-@keyframes sv-hub-fire    { 0%, 60% { opacity: 0.45; transform: scale(1); } 70% { opacity: 1; transform: scale(1.16); } 86%, 100% { opacity: 0.45; transform: scale(1); } }
-@keyframes sv-spin { to { transform: rotate(360deg); } }
-.sv-flow { stroke-dasharray: 5 15; animation: sv-flow 2.2s linear infinite; }
-.sv-s1, .sv-s2 { stroke-dasharray: 34 1000; animation-duration: 3.6s; animation-timing-function: linear; animation-iteration-count: infinite; }
-.sv-s1 { animation-name: sv-s1; }
-.sv-s2 { animation-name: sv-s2; }
-.sv-field-emit, .sv-node-arrive, .sv-hub-fire { transform-box: view-box; animation-duration: 3.6s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
-.sv-field-emit  { animation-name: sv-field-emit; }
-.sv-node-arrive { animation-name: sv-node-arrive; }
-.sv-hub-fire    { animation-name: sv-hub-fire; }
-.sv-spin     { transform-box: view-box; animation: sv-spin 48s linear infinite; }
-.sv-spin-rev { transform-box: view-box; animation: sv-spin 64s linear infinite reverse; }
-.sv-float { transform-box: fill-box; transform-origin: center; animation: drift 7s ease-in-out infinite; }
-@media (prefers-reduced-motion: reduce) { .sv-flow, .sv-s1, .sv-s2 { display: none; } }
+/* The hero systems animation lives in ./system-visual.css, imported by SystemVisual.tsx. */
