@@ -5,12 +5,12 @@
  *
  * Premium healthcare × clinical intelligence × enterprise technology × executive
  * strategy. One brand, two grounds. The anchors:
- *   #0B1F33 deep navy · #176B87 brand blue · #3A9DB5 teal · #C9A45C warm gold
- *   #F7F9FA warm white · #EAF1F4 soft blue-gray · #17232D charcoal · #65727D slate
- *   dark: #071521 ground · #0B1F33 secondary · #102B3D surface · #294454 border
+ *   #0f1e30 deep navy · #1f4e8c brand blue · #3b6ea8 steel blue · #b8975a brass
+ *   #f6f8fa warm white · #edf1f5 soft blue-gray · #14202e charcoal · #5c6b7a slate
+ *   dark: #0a1420 ground · #0f1e30 secondary · #152840 surface · #26394f border
  *
- * Distribution: ~70% neutral ground, ~20% navy / brand blue, ~8% teal, ~2% gold.
- * Gold is a detail colour only — rules, active marks, small emphasis. Never a fill.
+ * Distribution: ~70% neutral ground, ~20% navy / brand blue, ~8% steel blue, ~2% brass.
+ * Brass is a detail colour only — rules, active marks, small emphasis. Never a fill.
  *
  * Token names are stable so components re-skin without rewrites. Only the
  * ground-dependent tokens move between themes; brand colours are identical in
@@ -26,81 +26,81 @@
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   /* Executive navy wells. These stay dark in BOTH themes — on the dark theme
-     they sit a step above the #071521 ground so the section rhythm survives. */
-  --color-ink-950: #071521;
-  --color-ink-900: #0b1f33;
-  --color-ink-800: #102b3d;
-  --color-ink-700: #163a50;
-  --color-ink-600: #1e4a63;
-  --color-ink-500: #294454;
+     they sit a step above the #0a1420 ground so the section rhythm survives. */
+  --color-ink-950: #0a1420;
+  --color-ink-900: #0f1e30;
+  --color-ink-800: #152840;
+  --color-ink-700: #1a3352;
+  --color-ink-600: #234466;
+  --color-ink-500: #26394f;
 
   /* Warm-white ground. paper-50 is the raised tier, paper-300 the hairline. */
   --color-paper-50: #ffffff;
-  --color-paper-100: #f7f9fa;
-  --color-paper-200: #eaf1f4;
-  --color-paper-300: #d8e1e6;
+  --color-paper-100: #f6f8fa;
+  --color-paper-200: #edf1f5;
+  --color-paper-300: #d5dde5;
 
   /* Text scale — charcoal for copy, slate for support. muted-dark is the
      secondary text on navy grounds in either theme. */
-  --color-text: #17232d;
-  --color-muted: #65727d;
-  --color-muted-dark: #a9bac5;
+  --color-text: #14202e;
+  --color-muted: #5c6b7a;
+  --color-muted-dark: #a3b1c0;
 
-  /* Brand blue #176B87 and teal #3A9DB5. 500 is the fill; 600/700 are the accent
+  /* Corporate cobalt #1f4e8c and steel blue #3b6ea8. 500 is the fill; 600/700 are the accent
      TEXT tier (dark enough for small type on light grounds); 300/400 are the
-     teal tier used on navy grounds and for motion. */
-  --color-accent-300: #7fc4d6;
-  --color-accent-400: #3a9db5;
-  --color-accent-500: #176b87;
-  --color-accent-600: #125a72;
-  --color-accent-700: #0e4759;
+     steel tier used on navy grounds and for motion. */
+  --color-accent-300: #8fb3e0;
+  --color-accent-400: #3b6ea8;
+  --color-accent-500: #1f4e8c;
+  --color-accent-600: #193f73;
+  --color-accent-700: #12305a;
 
   /* Primary-fill interaction states. Darken in both themes. */
-  --color-accent-hover: #125a72;
-  --color-accent-active: #0e4759;
+  --color-accent-hover: #193f73;
+  --color-accent-active: #12305a;
 
   /* Primary button fill: navy on the light theme, brand blue on dark. */
-  --color-primary: #0b1f33;
-  --color-primary-hover: #163a50;
-  --color-primary-active: #071521;
+  --color-primary: #0f1e30;
+  --color-primary-hover: #1a3352;
+  --color-primary-active: #0a1420;
 
-  /* Warm gold — the premium 2%. */
-  --color-gold-400: #d9bb7a;
-  --color-gold-500: #c9a45c;
-  --color-gold-600: #a8863f;
+  /* Muted brass — the premium 2%. */
+  --color-gold-400: #cdb27e;
+  --color-gold-500: #b8975a;
+  --color-gold-600: #957742;
 
   /* Legacy name for the supporting accent; now the same gold. */
-  --color-signal-400: #d9bb7a;
-  --color-signal-500: #c9a45c;
-  --color-signal-600: #a8863f;
+  --color-signal-400: #cdb27e;
+  --color-signal-500: #b8975a;
+  --color-signal-600: #957742;
 
   /* Raised opaque card surface. */
   --color-surface: #ffffff;
 
   /* Legacy azure ramp now resolves to the brand blue ramp. */
-  --color-azure-500: #176b87;
-  --color-azure-600: #125a72;
-  --color-azure-700: #0e4759;
+  --color-azure-500: #1f4e8c;
+  --color-azure-600: #193f73;
+  --color-azure-700: #12305a;
 
   /* The full-width brand band (What-we-do, closing CTA, footer). Navy in both
      themes; everything placed on it is white, accent-300 or gold. */
-  --color-field: #0b1f33;
+  --color-field: #0f1e30;
 
   /* Hero ground. The brief's warm white on light, the deep ground on dark. */
-  --color-silver-100: #f7f9fa;
+  --color-silver-100: #f6f8fa;
 
   /* Pale bands — whole sections, never text. */
-  --color-mist-50: #f2f6f8;
-  --color-mist-100: #eaf1f4;
-  --color-mist-200: #dde7ec;
+  --color-mist-50: #f1f4f7;
+  --color-mist-100: #edf1f5;
+  --color-mist-200: #dfe6ec;
 
   --radius-2xl: 1.25rem;
   --radius-3xl: 1.5rem;
   --radius-4xl: 2rem;
 
-  --shadow-soft: 0 1px 2px rgba(11, 31, 51, 0.04), 0 8px 24px -12px rgba(11, 31, 51, 0.12), 0 24px 48px -28px rgba(23, 107, 135, 0.12);
-  --shadow-lift: 0 2px 4px rgba(11, 31, 51, 0.05), 0 18px 40px -16px rgba(11, 31, 51, 0.16), 0 40px 72px -36px rgba(23, 107, 135, 0.18);
-  --shadow-glow: 0 0 0 1px rgba(23, 107, 135, 0.18), 0 24px 64px -24px rgba(23, 107, 135, 0.28);
+  --shadow-soft: 0 1px 2px rgba(10, 26, 47, 0.04), 0 8px 24px -12px rgba(10, 26, 47, 0.12), 0 24px 48px -28px rgba(31, 78, 140, 0.12);
+  --shadow-lift: 0 2px 4px rgba(10, 26, 47, 0.05), 0 18px 40px -16px rgba(10, 26, 47, 0.16), 0 40px 72px -36px rgba(31, 78, 140, 0.18);
+  --shadow-glow: 0 0 0 1px rgba(31, 78, 140, 0.18), 0 24px 64px -24px rgba(31, 78, 140, 0.28);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
@@ -108,45 +108,45 @@
 
 /*
  * Dark theme. Only the ground-dependent tokens move: `paper` becomes the deep
- * navy ground, `text`/`muted` invert, surfaces lift to #102B3D, and the accent
- * text tier lightens to teal. Brand blue, gold and the logo's own colours are
+ * navy ground, `text`/`muted` invert, surfaces lift to #152840, and the accent
+ * text tier lightens to pale steel. Brand blue, gold and the logo's own colours are
  * identical in both themes. Never pure black.
  */
 .dark {
-  --color-paper-50: #102b3d;
-  --color-paper-100: #071521;
-  --color-paper-200: #0b1f33;
-  --color-paper-300: #294454;
+  --color-paper-50: #152840;
+  --color-paper-100: #0a1420;
+  --color-paper-200: #0f1e30;
+  --color-paper-300: #26394f;
 
-  --color-surface: #102b3d;
+  --color-surface: #152840;
 
-  --color-field: #0b1f33;
-  --color-silver-100: #071521;
+  --color-field: #0f1e30;
+  --color-silver-100: #0a1420;
 
-  --color-mist-50: #091a29;
-  --color-mist-100: #0b1f33;
-  --color-mist-200: #0e2638;
+  --color-mist-50: #0c1828;
+  --color-mist-100: #0f1e30;
+  --color-mist-200: #132639;
 
-  --color-text: #f7fafc;
-  --color-muted: #a9bac5;
-  --color-muted-dark: #a9bac5;
+  --color-text: #f2f5f8;
+  --color-muted: #a3b1c0;
+  --color-muted-dark: #a3b1c0;
 
   /* On the dark ground the executive wells lift one step. */
-  --color-ink-950: #050f18;
+  --color-ink-950: #06101b;
 
   /* accent-600/700 are the accent TEXT tier: on a dark ground they lighten. */
-  --color-accent-600: #7fc4d6;
-  --color-accent-700: #a6d8e5;
+  --color-accent-600: #8fb3e0;
+  --color-accent-700: #b4cceb;
 
   /* Primary button: brand blue with white text (4.9:1). */
-  --color-primary: #176b87;
-  --color-primary-hover: #125a72;
-  --color-primary-active: #0e4759;
+  --color-primary: #1f4e8c;
+  --color-primary-hover: #193f73;
+  --color-primary-active: #12305a;
 
   /* Depth comes from the lifted surfaces, not from heavy shadows. */
   --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.25), 0 10px 30px -14px rgba(0, 0, 0, 0.5);
   --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.3), 0 28px 56px -22px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 0 1px rgba(127, 196, 214, 0.18), 0 24px 64px -24px rgba(23, 107, 135, 0.4);
+  --shadow-glow: 0 0 0 1px rgba(143, 179, 224, 0.18), 0 24px 64px -24px rgba(31, 78, 140, 0.4);
 }
 
 @layer base {
@@ -160,8 +160,8 @@
     text-rendering: optimizeLegibility;
   }
   h1, h2, h3, h4 { @apply font-display; font-weight: 600; letter-spacing: -0.02em; }
-  ::selection { background: rgba(23, 107, 135, 0.18); }
-  .dark ::selection { background: rgba(127, 196, 214, 0.28); }
+  ::selection { background: rgba(31, 78, 140, 0.18); }
+  .dark ::selection { background: rgba(143, 179, 224, 0.28); }
   :focus-visible { outline: 2px solid var(--color-accent-400); outline-offset: 3px; border-radius: 4px; }
   button, [role="button"] { cursor: pointer; }
 
@@ -206,7 +206,7 @@
     backdrop-filter: blur(20px) saturate(170%);
     -webkit-backdrop-filter: blur(20px) saturate(170%);
   }
-  .dark .glass-light { background: rgba(7, 21, 33, 0.78); }
+  .dark .glass-light { background: rgba(10, 20, 32, 0.78); }
 
   .grid-bg {
     background-image:
@@ -216,8 +216,8 @@
   }
   .grid-bg-light {
     background-image:
-      linear-gradient(to right, rgba(11,31,51,0.045) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(11,31,51,0.045) 1px, transparent 1px);
+      linear-gradient(to right, rgba(10,26,47,0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10,26,47,0.045) 1px, transparent 1px);
     background-size: 64px 64px;
   }
   .dark .grid-bg-light {
@@ -264,12 +264,12 @@
    * normally instead of hard-coding hexes that would break one theme.
    */
   .card-on-accent {
-    --color-text: #17232d;
-    --color-muted: #65727d;
-    --color-paper-300: #d8e1e6;
-    --color-accent-600: #125a72;
-    --color-accent-700: #0e4759;
-    --shadow-lift: 0 2px 4px rgba(7, 21, 33, 0.12), 0 18px 40px -16px rgba(7, 21, 33, 0.35), 0 40px 72px -36px rgba(7, 21, 33, 0.4);
+    --color-text: #14202e;
+    --color-muted: #5c6b7a;
+    --color-paper-300: #d5dde5;
+    --color-accent-600: #193f73;
+    --color-accent-700: #12305a;
+    --shadow-lift: 0 2px 4px rgba(10, 20, 32, 0.12), 0 18px 40px -16px rgba(10, 20, 32, 0.35), 0 40px 72px -36px rgba(10, 20, 32, 0.4);
     @apply rounded-2xl bg-white shadow-lift;
   }
 

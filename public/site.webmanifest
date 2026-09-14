@@ -2,7 +2,7 @@
   "name": "Lucas Health Tech",
   "short_name": "LHT",
   "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }],
-  "theme_color": "#f7f9fa",
-  "background_color": "#f7f9fa",
+  "theme_color": "#f6f8fa",
+  "background_color": "#f6f8fa",
   "display": "standalone"
 }

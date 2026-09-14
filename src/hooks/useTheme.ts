@@ -6,7 +6,7 @@ export type Theme = 'light' | 'dark'
 const KEY = 'lht-theme'
 
 /** Browser UI chrome matches the page ground. */
-const GROUND: Record<Theme, string> = { light: '#f7f9fa', dark: '#071521' }
+const GROUND: Record<Theme, string> = { light: '#f6f8fa', dark: '#0a1420' }
 
 const listeners = new Set<() => void>()
 

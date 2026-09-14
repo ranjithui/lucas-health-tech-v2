@@ -37,8 +37,8 @@ export function PageHero({ eyebrow, title, lead, children, className, back }: Pa
         className="absolute inset-0"
         style={{
           background: dark
-            ? 'radial-gradient(55% 60% at 85% 15%, rgba(23, 107, 135, 0.2), transparent 62%)'
-            : 'radial-gradient(55% 60% at 85% 15%, rgba(58, 157, 181, 0.12), transparent 62%)',
+            ? 'radial-gradient(55% 60% at 85% 15%, rgba(31, 78, 140, 0.2), transparent 62%)'
+            : 'radial-gradient(55% 60% at 85% 15%, rgba(59, 110, 168, 0.12), transparent 62%)',
         }}
       />
       <div

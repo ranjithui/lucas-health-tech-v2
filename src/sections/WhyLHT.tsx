@@ -32,7 +32,7 @@ export function WhyLHT() {
                   return (
                     <li key={d.step} className="flex items-center gap-4">
                       <motion.span
-                        animate={{ scale: on ? 1 : 0.9, backgroundColor: on ? '#176B87' : 'rgba(255,255,255,0.06)', color: on ? '#F7FAFC' : 'rgba(255,255,255,0.6)' }}
+                        animate={{ scale: on ? 1 : 0.9, backgroundColor: on ? '#1f4e8c' : 'rgba(255,255,255,0.06)', color: on ? '#f2f5f8' : 'rgba(255,255,255,0.6)' }}
                         transition={{ duration: 0.4 }}
                         className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 font-mono text-[10.5px]"
                       >

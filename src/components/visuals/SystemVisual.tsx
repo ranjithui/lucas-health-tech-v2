@@ -164,40 +164,40 @@ const EDGES: Edge[] = [
 /** The two grounds. Every colour here is from the brand palette. */
 const PALETTE = {
   dark: {
-    base: '#176B87',
-    flow: '#3A9DB5',
-    particle: '#7FC4D6',
-    nodeFill: '#102B3D',
-    nodeEdge: 'rgba(127,196,214,0.5)',
-    icon: '#7FC4D6',
-    coreFrom: '#123243',
-    coreTo: '#0B1F33',
-    coreEdge: 'rgba(127,196,214,0.55)',
-    illum: '#176B87',
+    base: '#1f4e8c',
+    flow: '#3b6ea8',
+    particle: '#8fb3e0',
+    nodeFill: '#152840',
+    nodeEdge: 'rgba(143,179,224,0.5)',
+    icon: '#8fb3e0',
+    coreFrom: '#1a3352',
+    coreTo: '#0f1e30',
+    coreEdge: 'rgba(143,179,224,0.55)',
+    illum: '#1f4e8c',
     illumMax: 0.35,
     orbit: 'rgba(255,255,255,0.12)',
-    label: '#F7FAFC',
-    sub: '#A9BAC5',
-    gold: '#C9A45C',
+    label: '#f2f5f8',
+    sub: '#a3b1c0',
+    gold: '#b8975a',
     baseOpacity: 0.7,
     flowOpacity: 0.35,
   },
   light: {
-    base: '#176B87',
-    flow: '#3A9DB5',
-    particle: '#3A9DB5',
+    base: '#1f4e8c',
+    flow: '#3b6ea8',
+    particle: '#3b6ea8',
     nodeFill: '#FFFFFF',
-    nodeEdge: 'rgba(23,107,135,0.55)',
-    icon: '#176B87',
+    nodeEdge: 'rgba(31,78,140,0.55)',
+    icon: '#1f4e8c',
     coreFrom: '#FFFFFF',
     coreTo: '#FFFFFF',
-    coreEdge: 'rgba(23,107,135,0.45)',
-    illum: '#3A9DB5',
+    coreEdge: 'rgba(31,78,140,0.45)',
+    illum: '#3b6ea8',
     illumMax: 0.18,
-    orbit: 'rgba(11,31,51,0.14)',
-    label: '#0B1F33',
-    sub: '#65727D',
-    gold: '#C9A45C',
+    orbit: 'rgba(10,26,47,0.14)',
+    label: '#0f1e30',
+    sub: '#5c6b7a',
+    gold: '#b8975a',
     baseOpacity: 0.55,
     flowOpacity: 0.3,
   },
@@ -322,7 +322,7 @@ export function SystemVisual({ dark = true, className = 'max-w-[520px]' }: { dar
             <circle cx={CO.x} cy={CO.y} r={CORE_R} fill="url(#sv-core)" stroke={T.coreEdge} strokeWidth="1.5" />
             {/* The system is us: the full lockup on the core's own ground */}
             <svg x={CO.x - 58} y={CO.y - 38} width={116} height={116 * LOCKUP_RATIO} viewBox={LOCKUP_VIEWBOX} overflow="visible" aria-hidden>
-              <LogoLockup word={dark ? '#FFFFFF' : '#17232D'} rule="#2374e0" />
+              <LogoLockup word={dark ? '#FFFFFF' : '#14202e'} rule="#2374e0" />
             </svg>
             <text
               x={CO.x}
