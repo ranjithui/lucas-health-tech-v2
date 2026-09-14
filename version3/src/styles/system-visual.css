@@ -1,0 +1,30 @@
+/*
+ * Hero intelligence visual. One 3.6s cycle tells the story in two stages:
+ *   stage 1 (0–34%)   the field's energy travels its ring to the four domains
+ *   stage 2 (32–66%)  the domains converge into the system, which fires
+ * then a short rest before it repeats. Every path carries pathLength="400", so
+ * a packet is a 34-unit dash that enters at offset 34 and has left at -400 —
+ * the same maths for a short stream and a long one.
+ *   sv-flow — the ambient current of dashes that never stops
+ *   sv-sN   — the staged packet for stage N
+ *   sv-*-emit / -arrive / -fire — nodes light up as the packet reaches them
+ */
+@keyframes sv-flow { to { stroke-dashoffset: -40; } }
+@keyframes sv-s1 { 0% { stroke-dashoffset: 34; animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1); } 34%, 100% { stroke-dashoffset: -400; } }
+@keyframes sv-s2 { 0%, 32% { stroke-dashoffset: 34; animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1); } 66%, 100% { stroke-dashoffset: -400; } }
+@keyframes sv-field-emit  { 0% { opacity: 0.5; transform: scale(1); } 6% { opacity: 1; transform: scale(1.14); } 20%, 100% { opacity: 0.5; transform: scale(1); } }
+@keyframes sv-node-arrive { 0%, 27% { opacity: 0.5; transform: scale(1); } 36% { opacity: 1; transform: scale(1.14); } 50%, 100% { opacity: 0.5; transform: scale(1); } }
+@keyframes sv-hub-fire    { 0%, 60% { opacity: 0.45; transform: scale(1); } 70% { opacity: 1; transform: scale(1.16); } 86%, 100% { opacity: 0.45; transform: scale(1); } }
+@keyframes sv-spin { to { transform: rotate(360deg); } }
+.sv-flow { stroke-dasharray: 5 15; animation: sv-flow 2.2s linear infinite; }
+.sv-s1, .sv-s2 { stroke-dasharray: 34 1000; animation-duration: 3.6s; animation-timing-function: linear; animation-iteration-count: infinite; }
+.sv-s1 { animation-name: sv-s1; }
+.sv-s2 { animation-name: sv-s2; }
+.sv-field-emit, .sv-node-arrive, .sv-hub-fire { transform-box: view-box; animation-duration: 3.6s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
+.sv-field-emit  { animation-name: sv-field-emit; }
+.sv-node-arrive { animation-name: sv-node-arrive; }
+.sv-hub-fire    { animation-name: sv-hub-fire; }
+.sv-spin     { transform-box: view-box; animation: sv-spin 48s linear infinite; }
+.sv-spin-rev { transform-box: view-box; animation: sv-spin 64s linear infinite reverse; }
+.sv-float { transform-box: fill-box; transform-origin: center; animation: drift 7s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .sv-flow, .sv-s1, .sv-s2 { display: none; } }
