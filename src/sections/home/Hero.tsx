@@ -101,7 +101,7 @@ export function Hero() {
           transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
           className="relative"
         >
-          <Suspense fallback={<div className="mx-auto aspect-[680/640] w-full max-w-[340px] sm:max-w-[460px] lg:max-w-[620px]" aria-hidden />}>
+          <Suspense fallback={<div className="mx-auto aspect-[680/570] w-full max-w-[340px] sm:max-w-[460px] lg:max-w-[620px]" aria-hidden />}>
             <SystemVisual dark={theme === 'dark'} className="max-w-[340px] sm:max-w-[460px] lg:max-w-[620px]" />
           </Suspense>
         </motion.div>

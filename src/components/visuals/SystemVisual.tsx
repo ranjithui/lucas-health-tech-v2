@@ -6,7 +6,6 @@ import {
   Settings,
   Cloud,
   Lightbulb,
-  Sparkles,
   type LucideProps,
 } from 'lucide-react'
 import { domains } from '../../data/company'
@@ -16,197 +15,128 @@ import { LogoLockup, LOCKUP_VIEWBOX, LOCKUP_RATIO } from '../layout/LogoLockup'
 import '../../styles/system-visual.css'
 
 /**
- * Hero visual: healthcare flows through our intelligence into transformation.
+ * Hero visual: healthcare is the field, drawn as a field.
  *
- *                       HEALTHCARE                ← the field, top
- *                        ╲  │  ╱
- *     CLINICAL ────── ( INTELLIGENCE ) ────── OPERATIONS
- *          ╲            ╱        ╲              ╱
- *           TECHNOLOGY ──────────── INNOVATION   ← the four systems fan out
- *               ╲      ╲        ╱      ╱           and exchange laterally
- *                  TRANSFORMATION                ← everything converges, fires
+ *                  HEALTHCARE  (top of the ring)
+ *          ╭───────────┴───────────╮
+ *     CLINICAL                   OPERATIONS      ← the four domains sit ON
+ *          │     (  LUCAS LOGO  )     │           the ring, inside the field
+ *     TECHNOLOGY                 INNOVATION
+ *          ╰───────────────────────╯
  *
- * One 5.4s cycle: signals leave Healthcare and light the core; the core
- * distributes to the four systems, which talk to their neighbours and reply;
- * then all four converge into Transformation, which fires. Then a beat of rest.
+ * The ring IS the field. One 3.6s cycle in two stages: energy leaves
+ * Healthcare and travels the ring both ways, lighting each domain as it
+ * passes; then the domains converge into the system, which fires.
  *
- * Pure SVG — no canvas, no image payload, no per-frame JS. The continuous
- * motion is CSS (src/styles/system-visual.css) and stops entirely on
- * low-power devices or under reduced motion; the one-shot draw-in on mount is
- * `motion`. Two treatments via `dark`; geometry is shared.
+ * Pure SVG — no canvas, no WebGL, no image payload. Continuous motion is CSS
+ * and stops on low-power devices or under reduced motion; the one-shot draw-in
+ * on mount is `motion`. Two treatments via `dark`; geometry is shared.
  */
 
-const VB = { w: 680, h: 640 }
+/** The composition spans y≈40–600; the viewBox starts at y0 so it fills its column. */
+const VB = { w: 680, h: 570, y0: 30 }
+const HUB = { x: 340, y: 318, r: 82 }
+const RING = { rx: 215, ry: 215 }
+const NODE_R = 34
 
-/** One story cycle in seconds. Mirrors `--sv-cycle` in system-visual.css. */
-const CYCLE = 5.4
-/**
- * The CSS keyframes are "windowed": each does its work in the first ~20% of
- * the cycle and then rests. This returns the (negative) animation-delay that
- * puts that window at `pct` percent of the shared cycle.
- */
-const at = (pct: number) => `${((pct / 100) * CYCLE - CYCLE).toFixed(3)}s`
+const onRing = (deg: number) => {
+  const t = (deg * Math.PI) / 180
+  return { x: +(HUB.x + RING.rx * Math.cos(t)).toFixed(1), y: +(HUB.y + RING.ry * Math.sin(t)).toFixed(1) }
+}
 
-type Pt = { x: number; y: number }
-const f = (n: number) => +n.toFixed(1)
-
-/** Node centres. The composition fills the viewBox top to bottom. */
-const P = {
-  healthcare: { x: 340, y: 76 },
-  core: { x: 340, y: 262 },
-  clinical: { x: 112, y: 262 },
-  operations: { x: 568, y: 262 },
-  technology: { x: 240, y: 442 },
-  innovation: { x: 440, y: 442 },
-  transformation: { x: 340, y: 574 },
-} satisfies Record<string, Pt>
-type NodeId = keyof typeof P
-
-const CORE_R = 78
-const ORBIT_R = 96
-
-type Side = 'top' | 'bottom'
-type Role = 'field' | 'domain' | 'outcome'
+type Side = 'top' | 'bottom' | 'left' | 'right'
+type Role = 'field' | 'domain'
 interface Node {
-  id: NodeId
+  id: string
   label: string
-  tag?: string
+  tag: string
   role: Role
+  deg: number
   side: Side
-  r: number
   Icon: ComponentType<LucideProps>
-  /** Cycle % at which a packet lands here; the halo ring pulses then. */
-  pulseAt: number
+  /** Lower domains are reached later in the ring's travel. */
+  late?: boolean
 }
 
 const NODES: Node[] = [
-  { id: 'healthcare', label: 'Healthcare', tag: 'The field', role: 'field', side: 'top', r: 26, Icon: Users, pulseAt: 0 },
-  { id: 'clinical', label: 'Clinical', tag: 'Care delivery', role: 'domain', side: 'top', r: 32, Icon: Stethoscope, pulseAt: 40 },
-  { id: 'operations', label: 'Operations', tag: 'Efficiency', role: 'domain', side: 'top', r: 32, Icon: Settings, pulseAt: 40 },
-  { id: 'technology', label: 'Technology', tag: 'Integration', role: 'domain', side: 'bottom', r: 32, Icon: Cloud, pulseAt: 44 },
-  { id: 'innovation', label: 'Innovation', tag: 'AI · Automation', role: 'domain', side: 'bottom', r: 32, Icon: Lightbulb, pulseAt: 44 },
-  { id: 'transformation', label: 'Transformation', role: 'outcome', side: 'bottom', r: 28, Icon: Sparkles, pulseAt: 81 },
+  { id: 'healthcare', label: 'Healthcare', tag: 'The field', role: 'field', deg: -90, side: 'top', Icon: Users },
+  { id: 'clinical', label: 'Clinical', tag: 'Care delivery', role: 'domain', deg: -150, side: 'left', Icon: Stethoscope },
+  { id: 'operations', label: 'Operations', tag: 'Efficiency', role: 'domain', deg: -30, side: 'right', Icon: Settings },
+  { id: 'technology', label: 'Technology', tag: 'Integration', role: 'domain', deg: 150, side: 'left', Icon: Cloud, late: true },
+  { id: 'innovation', label: 'Innovation', tag: 'AI · Automation', role: 'domain', deg: 30, side: 'right', Icon: Lightbulb, late: true },
 ]
+const POS = Object.fromEntries(NODES.map((n) => [n.id, onRing(n.deg)])) as Record<string, { x: number; y: number }>
 const DOMAINS = NODES.filter((n) => n.role === 'domain')
-const RADIUS = Object.fromEntries(NODES.map((n) => [n.id, n.r])) as Record<NodeId, number>
 
-/**
- * A connection from the rim of circle `a` to the rim of circle `b`. `bend`
- * bows the curve sideways: positive is to the right of the direction of
- * travel (on screen), negative to the left; 0 is a straight line.
- */
-const edge = (a: Pt, ra: number, b: Pt, rb: number, bend = 0) => {
-  const dx = b.x - a.x
-  const dy = b.y - a.y
-  const len = Math.hypot(dx, dy)
-  const ux = dx / len
-  const uy = dy / len
-  const nx = -uy
-  const ny = ux
-  const s = { x: a.x + ux * ra, y: a.y + uy * ra }
-  const e = { x: b.x - ux * rb, y: b.y - uy * rb }
-  const l = (len - ra - rb) / 3
-  const c1 = { x: s.x + ux * l + nx * bend, y: s.y + uy * l + ny * bend }
-  const c2 = { x: e.x - ux * l + nx * bend, y: e.y - uy * l + ny * bend }
-  return `M ${f(s.x)} ${f(s.y)} C ${f(c1.x)} ${f(c1.y)}, ${f(c2.x)} ${f(c2.y)}, ${f(e.x)} ${f(e.y)}`
+/** Cubic that bows toward the vertical axis, so the domain streams converge like tendrils. */
+const converge = (a: { x: number; y: number }, b: { x: number; y: number }) => {
+  const my = (a.y + b.y) / 2
+  return `M ${a.x} ${a.y} C ${a.x} ${my}, ${b.x} ${my}, ${b.x} ${b.y}`
 }
+/** Elliptical arc along the ring from the top to `to`, going left (sweep 0) or right (sweep 1). */
+const alongRing = (to: { x: number; y: number }, sweep: 0 | 1) =>
+  `M ${POS.healthcare.x} ${POS.healthcare.y} A ${RING.rx} ${RING.ry} 0 0 ${sweep} ${to.x} ${to.y}`
 
-type PacketClass = 'sv-comet' | 'sv-dot-out' | 'sv-dot-in'
-interface Packet {
-  cls: PacketClass
-  /** Cycle % at which this packet starts travelling. */
-  at: number
-}
 interface Edge {
   id: string
   d: string
-  /** Domain ids whose hover/focus should highlight this edge. */
-  touches: NodeId[]
-  packets: Packet[]
-  /** Carries the faint ambient current. */
-  flow?: boolean
-  /** Mount draw-in delay, seconds. */
-  draw: number
+  stage: 1 | 2
+  touches: string[]
+  /** Stage-1 arcs ride the ring, which is already drawn — no base line of their own. */
+  bare?: boolean
 }
 
-const { healthcare: HC, core: CO, clinical: CL, operations: OP, technology: TE, innovation: IN, transformation: TR } = P
-
-/**
- * Every connection in story order. Outward dots leave the core on the left
- * pair first, then the lower pair; replies come back a little later; the
- * lateral exchange sits in between; the convergence comets go last.
- */
 const EDGES: Edge[] = [
-  // Healthcare → Intelligence: three signal lines funnelling into the core.
-  { id: 'signal-l', d: `M 322 94 C 306 122, 300 156, 311 190`, touches: [], packets: [{ cls: 'sv-comet', at: 2 }], flow: true, draw: 0.45 },
-  { id: 'signal-c', d: `M ${HC.x} ${HC.y + RADIUS.healthcare} L ${CO.x} ${CO.y - CORE_R}`, touches: [], packets: [{ cls: 'sv-comet', at: 0 }], flow: true, draw: 0.4 },
-  { id: 'signal-r', d: `M 358 94 C 374 122, 380 156, 369 190`, touches: [], packets: [{ cls: 'sv-comet', at: 4 }], flow: true, draw: 0.5 },
-
-  // Intelligence ↔ the four systems.
-  { id: 'core-clinical', d: edge(CO, CORE_R, CL, RADIUS.clinical), touches: ['clinical'], packets: [{ cls: 'sv-dot-out', at: 20 }, { cls: 'sv-dot-in', at: 42 }], flow: true, draw: 0.7 },
-  { id: 'core-operations', d: edge(CO, CORE_R, OP, RADIUS.operations), touches: ['operations'], packets: [{ cls: 'sv-dot-out', at: 20 }, { cls: 'sv-dot-in', at: 42 }], flow: true, draw: 0.7 },
-  { id: 'core-technology', d: edge(CO, CORE_R, TE, RADIUS.technology, 12), touches: ['technology'], packets: [{ cls: 'sv-dot-out', at: 24 }, { cls: 'sv-dot-in', at: 46 }], flow: true, draw: 0.8 },
-  { id: 'core-innovation', d: edge(CO, CORE_R, IN, RADIUS.innovation, -12), touches: ['innovation'], packets: [{ cls: 'sv-dot-out', at: 24 }, { cls: 'sv-dot-in', at: 46 }], flow: true, draw: 0.8 },
-
-  // Neighbouring systems exchange both ways.
-  { id: 'clinical-technology', d: edge(CL, RADIUS.clinical, TE, RADIUS.technology, 12), touches: ['clinical', 'technology'], packets: [{ cls: 'sv-dot-out', at: 34 }, { cls: 'sv-dot-in', at: 40 }], flow: true, draw: 1.05 },
-  { id: 'operations-innovation', d: edge(OP, RADIUS.operations, IN, RADIUS.innovation, -12), touches: ['operations', 'innovation'], packets: [{ cls: 'sv-dot-out', at: 34 }, { cls: 'sv-dot-in', at: 40 }], flow: true, draw: 1.05 },
-  { id: 'technology-innovation', d: `M 270 431 Q ${CO.x} 402 410 431`, touches: ['technology', 'innovation'], packets: [{ cls: 'sv-dot-out', at: 38 }, { cls: 'sv-dot-in', at: 44 }], flow: true, draw: 1.15 },
-
-  // The four systems converge into Transformation. The outer pair sweep
-  // around the lower nodes and arrive from the sides; the lower pair meet at the top.
-  { id: 'clinical-transformation', d: `M ${CL.x} ${CL.y + RADIUS.clinical} C 100 430, 108 ${TR.y}, ${TR.x - RADIUS.transformation} ${TR.y}`, touches: ['clinical'], packets: [{ cls: 'sv-comet', at: 58 }], draw: 1.3 },
-  { id: 'operations-transformation', d: `M ${OP.x} ${OP.y + RADIUS.operations} C 580 430, 572 ${TR.y}, ${TR.x + RADIUS.transformation} ${TR.y}`, touches: ['operations'], packets: [{ cls: 'sv-comet', at: 58 }], draw: 1.3 },
-  { id: 'technology-transformation', d: `M 271 450 C 325 458, 340 495, ${TR.x - 2} ${TR.y - RADIUS.transformation}`, touches: ['technology'], packets: [{ cls: 'sv-comet', at: 62 }], draw: 1.4 },
-  { id: 'innovation-transformation', d: `M 409 450 C 355 458, 340 495, ${TR.x + 2} ${TR.y - RADIUS.transformation}`, touches: ['innovation'], packets: [{ cls: 'sv-comet', at: 62 }], draw: 1.4 },
+  { id: 'field-left', d: alongRing(POS.technology, 0), stage: 1, touches: ['healthcare', 'clinical', 'technology'], bare: true },
+  { id: 'field-right', d: alongRing(POS.innovation, 1), stage: 1, touches: ['healthcare', 'operations', 'innovation'], bare: true },
+  ...DOMAINS.map<Edge>((d) => ({ id: `${d.id}-hub`, d: converge(POS[d.id], HUB), stage: 2, touches: [d.id] })),
 ]
 
-/** The two grounds. Every colour here is from the brand palette. */
 const PALETTE = {
   dark: {
-    base: '#1f4e8c',
-    flow: '#3b6ea8',
+    halo: '#1f4e8c',
+    orbit: 'rgba(255,255,255,0.13)',
     particle: '#8fb3e0',
+    ring: 'rgba(143,179,224,0.5)',
+    stream: '#3b6ea8',
+    flow: '#b4cceb',
+    pulse: '#ffffff',
+    hubFill: '#0f1e30',
+    hubCore: '#1a3352',
+    hubEdge: 'rgba(143,179,224,0.55)',
+    hubGlow: 'rgba(31,78,140,0.55)',
     nodeFill: '#152840',
     nodeEdge: 'rgba(143,179,224,0.5)',
-    icon: '#8fb3e0',
-    coreFrom: '#1a3352',
-    coreTo: '#0f1e30',
-    coreEdge: 'rgba(143,179,224,0.55)',
-    illum: '#1f4e8c',
-    illumMax: 0.35,
-    orbit: 'rgba(255,255,255,0.12)',
-    label: '#f2f5f8',
-    sub: '#a3b1c0',
-    gold: '#b8975a',
-    baseOpacity: 0.7,
-    flowOpacity: 0.35,
+    icon: '#b4cceb',
+    label: '#ffffff',
+    sub: 'rgba(255,255,255,0.6)',
+    baseOpacity: 0.85,
+    flowOpacity: 0.65,
   },
   light: {
-    base: '#1f4e8c',
-    flow: '#3b6ea8',
-    particle: '#3b6ea8',
-    nodeFill: '#FFFFFF',
-    nodeEdge: 'rgba(31,78,140,0.55)',
-    icon: '#1f4e8c',
-    coreFrom: '#FFFFFF',
-    coreTo: '#FFFFFF',
-    coreEdge: 'rgba(31,78,140,0.45)',
-    illum: '#3b6ea8',
-    illumMax: 0.18,
+    halo: '#3b6ea8',
     orbit: 'rgba(10,26,47,0.14)',
+    particle: '#3b6ea8',
+    ring: 'rgba(31,78,140,0.45)',
+    stream: '#1f4e8c',
+    flow: '#3b6ea8',
+    pulse: '#1f4e8c',
+    hubFill: '#ffffff',
+    hubCore: '#ffffff',
+    hubEdge: 'rgba(31,78,140,0.4)',
+    hubGlow: 'rgba(59,110,168,0.32)',
+    nodeFill: '#ffffff',
+    nodeEdge: 'rgba(31,78,140,0.4)',
+    icon: '#1f4e8c',
     label: '#0f1e30',
     sub: '#5c6b7a',
-    gold: '#b8975a',
-    baseOpacity: 0.55,
-    flowOpacity: 0.3,
+    baseOpacity: 0.75,
+    flowOpacity: 0.45,
   },
 } as const
 
 const spring = { type: 'spring', stiffness: 160, damping: 22 } as const
-const DRAW_EASE = [0.16, 1, 0.3, 1] as const
-/** Moving elements fade in only after the scene has drawn itself. */
-const MOTION_IN = { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { delay: 1.7 } } as const
+const ARRIVE: Record<Role, string> = { field: 'sv-field-emit', domain: 'sv-node-arrive' }
 
 export function SystemVisual({ dark = true, className = 'max-w-[520px]' }: { dark?: boolean; className?: string }) {
   const [active, setActive] = useState<string | null>(null)
@@ -214,192 +144,214 @@ export function SystemVisual({ dark = true, className = 'max-w-[520px]' }: { dar
   const T = dark ? PALETTE.dark : PALETTE.light
   const current = domains.find((d) => d.id === active)
   const origin = { transformBox: 'fill-box', transformOrigin: '50% 50%' } as const
-  const coreOrigin = { transformOrigin: `${CO.x}px ${CO.y}px` } as const
+  const hubOrigin = { transformOrigin: `${HUB.x}px ${HUB.y}px` } as const
 
   return (
     <div className={cn('relative mx-auto w-full', className)}>
-      <div className="relative aspect-[680/640] w-full">
+      <div className="relative aspect-[680/570] w-full">
         <svg
-          viewBox={`0 0 ${VB.w} ${VB.h}`}
-          className="sv-scene absolute inset-0 h-full w-full overflow-visible"
+          viewBox={`0 ${VB.y0} ${VB.w} ${VB.h}`}
+          className="absolute inset-0 h-full w-full overflow-visible"
           role="img"
-          aria-label="Healthcare signals flow into the Lucas Health Tech intelligence core, are coordinated across clinical, operations, technology and innovation, and converge into transformation."
+          aria-label="Healthcare, the field, surrounds four domains — clinical, operations, technology and innovation — which converge into the Lucas Health Tech system."
         >
           <defs>
-            {/* The core's inner illumination — a soft wash, never a glow. */}
-            <radialGradient id="sv-illum">
-              <stop offset="0%" stopColor={T.illum} stopOpacity={T.illumMax} />
-              <stop offset="45%" stopColor={T.illum} stopOpacity={T.illumMax * 0.4} />
-              <stop offset="100%" stopColor={T.illum} stopOpacity="0" />
+            <radialGradient id="sv-halo">
+              <stop offset="0%" stopColor={T.halo} stopOpacity={dark ? 0.32 : 0.16} />
+              <stop offset="55%" stopColor={T.halo} stopOpacity={dark ? 0.08 : 0.04} />
+              <stop offset="100%" stopColor={T.halo} stopOpacity="0" />
             </radialGradient>
-            <radialGradient id="sv-core" cx="50%" cy="38%" r="70%">
-              <stop offset="0%" stopColor={T.coreFrom} />
-              <stop offset="100%" stopColor={T.coreTo} />
+            <radialGradient id="sv-hub" cx="50%" cy="38%" r="70%">
+              <stop offset="0%" stopColor={T.hubCore} />
+              <stop offset="100%" stopColor={T.hubFill} />
             </radialGradient>
-            {/* Transformation's gold ground — the only gold in the scene. */}
-            <radialGradient id="sv-gold">
-              <stop offset="0%" stopColor={T.gold} stopOpacity={dark ? 0.28 : 0.2} />
-              <stop offset="60%" stopColor={T.gold} stopOpacity={dark ? 0.08 : 0.05} />
-              <stop offset="100%" stopColor={T.gold} stopOpacity="0" />
-            </radialGradient>
-            {/* Comets get the softest of halos: a 2.5px blur under the stroke. */}
             <filter id="sv-glow" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="2.5" result="b" />
+              <feGaussianBlur stdDeviation="3.5" result="b" />
               <feMerge>
                 <feMergeNode in="b" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
+            <filter id="sv-soft" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="10" />
+            </filter>
           </defs>
 
-          {/* ── Ambient: the illumination behind the core, its orbit hairlines ── */}
-          <circle
-            cx={CO.x}
-            cy={CO.y}
-            r={150}
-            fill="url(#sv-illum)"
-            className={cn(!still && 'sv-core-lit')}
-            style={{ animationDelay: at(18), opacity: still ? 0.6 : undefined }}
-          />
-          <circle cx={CO.x} cy={CO.y} r={ORBIT_R + 24} fill="none" stroke={T.orbit} strokeWidth="1" />
-          <g className={cn(!still && 'sv-spin')} style={coreOrigin}>
-            <circle cx={CO.x} cy={CO.y} r={ORBIT_R} fill="none" stroke={T.orbit} strokeWidth="1" strokeDasharray="3 8" />
-            {[40, 200].map((deg) => (
-              <circle
-                key={deg}
-                cx={f(CO.x + ORBIT_R * Math.cos((deg * Math.PI) / 180))}
-                cy={f(CO.y + ORBIT_R * Math.sin((deg * Math.PI) / 180))}
-                r="2"
-                fill={T.particle}
-                opacity="0.7"
-              />
+          {/* ── Ambient: halo, an outer dashed orbit outside the field, an inner one inside it ── */}
+          <circle cx={HUB.x} cy={HUB.y} r="250" fill="url(#sv-halo)" />
+          <g className={cn(!still && 'sv-spin')} style={hubOrigin}>
+            <ellipse cx={HUB.x} cy={HUB.y} rx={RING.rx + 34} ry={RING.ry + 28} fill="none" stroke={T.orbit} strokeWidth="1" strokeDasharray="2 9" />
+            {[15, 130, 250].map((deg) => (
+              <circle key={deg} cx={HUB.x + (RING.rx + 34) * Math.cos((deg * Math.PI) / 180)} cy={HUB.y + (RING.ry + 28) * Math.sin((deg * Math.PI) / 180)} r="3" fill={T.particle} opacity="0.85" />
+            ))}
+          </g>
+          <g className={cn(!still && 'sv-spin-rev')} style={hubOrigin}>
+            <ellipse cx={HUB.x} cy={HUB.y} rx="164" ry="128" fill="none" stroke={T.orbit} strokeWidth="1" />
+            {[70, 200, 320].map((deg) => (
+              <circle key={deg} cx={HUB.x + 164 * Math.cos((deg * Math.PI) / 180)} cy={HUB.y + 128 * Math.sin((deg * Math.PI) / 180)} r="2.2" fill={T.particle} opacity="0.7" />
             ))}
           </g>
 
-          {/* ── Connections: base line, ambient current, windowed packets ── */}
+          {/* ── The field: the ring itself, with a current always circulating it ── */}
+          <motion.ellipse
+            cx={HUB.x}
+            cy={HUB.y}
+            rx={RING.rx}
+            ry={RING.ry}
+            fill="none"
+            stroke={T.ring}
+            strokeWidth="1.5"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: 1.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          />
+          {!still && (
+            <motion.ellipse
+              cx={HUB.x}
+              cy={HUB.y}
+              rx={RING.rx}
+              ry={RING.ry}
+              pathLength={400}
+              fill="none"
+              stroke={T.flow}
+              strokeWidth="1.1"
+              strokeOpacity={T.flowOpacity}
+              className="sv-flow"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.6 }}
+            />
+          )}
+
+          {/* ── Streams, drawn in stage order ────────────────────────────── */}
           <g fill="none" strokeLinecap="round">
-            {EDGES.map((e) => {
-              const on = active !== null && e.touches.includes(active as NodeId)
+            {EDGES.map((e, i) => {
+              const on = active !== null && e.touches.includes(active)
               const dim = active !== null && !on
               return (
-                <g key={e.id} style={{ opacity: dim ? 0.35 : 1, transition: 'opacity 400ms' }}>
-                  <motion.path
-                    d={e.d}
-                    stroke={T.base}
-                    strokeOpacity={on ? 1 : T.baseOpacity}
-                    strokeWidth={on ? 2.2 : 1.4}
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={{ pathLength: 1, opacity: 1 }}
-                    transition={{ duration: 0.9, delay: e.draw, ease: DRAW_EASE }}
-                  />
-                  {!still && e.flow && (
-                    <motion.path d={e.d} stroke={T.flow} strokeWidth="1" strokeOpacity={on ? 0.7 : T.flowOpacity} className="sv-flow" {...MOTION_IN} />
+                <g key={e.id} style={{ opacity: dim ? 0.3 : 1, transition: 'opacity 400ms' }}>
+                  {!e.bare && (
+                    <motion.path
+                      d={e.d}
+                      stroke={T.stream}
+                      strokeOpacity={on ? 1 : T.baseOpacity}
+                      strokeWidth={on ? 2.6 : 1.7}
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{ pathLength: 1, opacity: 1 }}
+                      transition={{ duration: 0.9, delay: 0.5 + (e.stage - 1) * 0.5 + (i % 4) * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                    />
                   )}
-                  {!still &&
-                    e.packets.map((p) => {
-                      const comet = p.cls === 'sv-comet'
-                      return (
+                  {!still && (
+                    <>
+                      {!e.bare && (
                         <motion.path
-                          key={`${p.cls}-${p.at}`}
                           d={e.d}
                           pathLength={400}
-                          stroke={T.particle}
-                          strokeWidth={comet ? (on ? 3 : 2.2) : on ? 4 : 3.2}
-                          filter={comet ? 'url(#sv-glow)' : undefined}
-                          className={p.cls}
-                          style={{ animationDelay: at(p.at) }}
-                          {...MOTION_IN}
+                          stroke={T.flow}
+                          strokeWidth="1.1"
+                          strokeOpacity={on ? 0.95 : T.flowOpacity}
+                          className="sv-flow"
+                          style={{ animationDelay: `${-i * 0.31}s` }}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 1.6 }}
                         />
-                      )
-                    })}
+                      )}
+                      {/* Staged packet */}
+                      <motion.path
+                        d={e.d}
+                        pathLength={400}
+                        stroke={T.pulse}
+                        strokeWidth={on ? 3.4 : 2.4}
+                        filter="url(#sv-glow)"
+                        className={`sv-s${e.stage}`}
+                        style={{ animationDelay: `${-(i % 4) * 0.05}s` }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1.8 }}
+                      />
+                    </>
+                  )}
                 </g>
               )
             })}
           </g>
 
-          {/* ── The core — Intelligence ─────────────────────────────────── */}
-          <motion.g initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ ...spring, delay: 0.2 }} style={origin}>
-            <circle cx={CO.x} cy={CO.y} r={CORE_R} fill="url(#sv-core)" stroke={T.coreEdge} strokeWidth="1.5" />
-            {/* The system is us: the full lockup on the core's own ground */}
-            <svg x={CO.x - 58} y={CO.y - 38} width={116} height={116 * LOCKUP_RATIO} viewBox={LOCKUP_VIEWBOX} overflow="visible" aria-hidden>
-              <LogoLockup word={dark ? '#FFFFFF' : '#14202e'} rule="#2374e0" />
+          {/* ── Hub — our system ─────────────────────────────────────────── */}
+          <motion.g initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ ...spring, delay: 0.15 }} style={origin}>
+            <circle
+              cx={HUB.x}
+              cy={HUB.y}
+              r={HUB.r + 26}
+              fill={T.hubGlow}
+              filter="url(#sv-soft)"
+              className={cn(!still && 'sv-hub-fire')}
+              style={{ ...hubOrigin, opacity: still ? 0.6 : undefined }}
+            />
+            <g className={cn(!still && 'sv-spin')} style={{ ...hubOrigin, animationDuration: '30s' }}>
+              <circle cx={HUB.x} cy={HUB.y} r={HUB.r + 16} fill="none" stroke={T.hubEdge} strokeWidth="1" strokeDasharray="3 7" />
+            </g>
+            <circle cx={HUB.x} cy={HUB.y} r={HUB.r} fill="url(#sv-hub)" stroke={T.hubEdge} strokeWidth="1.5" />
+            {/* The system is us: the full lockup, on the hub's own ground */}
+            <svg x={HUB.x - 60} y={HUB.y - 34} width={120} height={120 * LOCKUP_RATIO} viewBox={LOCKUP_VIEWBOX} overflow="visible" aria-hidden>
+              <LogoLockup word={dark ? '#ffffff' : '#14202e'} rule="#2374e0" />
             </svg>
-            <text
-              x={CO.x}
-              y={CO.y + 36}
-              textAnchor="middle"
-              fill={T.label}
-              className="font-mono [font-size:14px] sm:[font-size:9.5px]"
-              style={{ letterSpacing: '0.2em', fontWeight: 500 }}
-            >
-              INTELLIGENCE
-            </text>
-            <text x={CO.x} y={CO.y + ORBIT_R + 18} textAnchor="middle" fill={T.sub} className="hidden font-mono sm:block" style={{ fontSize: 7.5, letterSpacing: '0.18em' }}>
+            <text x={HUB.x} y={HUB.y + 38} textAnchor="middle" fill={T.sub} className="hidden font-mono sm:block" style={{ fontSize: 7.5, letterSpacing: '0.18em' }}>
               OUR SYSTEM
             </text>
           </motion.g>
 
-          {/* ── Nodes: the field, the four systems, the outcome ──────────── */}
+          {/* ── Nodes, sitting on the ring ───────────────────────────────── */}
           {NODES.map((n, i) => {
-            const { x, y } = P[n.id]
+            const { x, y } = POS[n.id]
             const on = active === n.id
             const dim = active !== null && !on && n.role === 'domain'
-            const outcome = n.role === 'outcome'
-            const ly = n.side === 'top' ? y - n.r - 24 : y + n.r + 24
-            const nodeOrigin = { transformOrigin: `${x}px ${y}px` } as const
+            const lx = n.side === 'left' ? x - NODE_R - 16 : n.side === 'right' ? x + NODE_R + 16 : x
+            const ly = n.side === 'top' ? y - NODE_R - 26 : n.side === 'bottom' ? y + NODE_R + 30 : y - 2
+            const anchor = n.side === 'left' ? 'end' : n.side === 'right' ? 'start' : 'middle'
             return (
               <motion.g
                 key={n.id}
                 initial={{ scale: 0.6, opacity: 0 }}
                 animate={{ scale: 1, opacity: dim ? 0.45 : 1 }}
-                transition={{ ...spring, delay: 0.3 + i * 0.16 }}
+                transition={{ ...spring, delay: 0.4 + i * 0.09 }}
                 style={origin}
               >
-                {outcome && (
-                  /* The gold ground that rises under Transformation as it fires */
+                <g className={cn(!still && 'sv-float')} style={{ animationDelay: `${-i * 1.1}s`, animationDuration: `${6.5 + (i % 3)}s` }}>
+                  {/* Arrival ring — lights up when the packet reaches this node */}
                   <circle
                     cx={x}
                     cy={y}
-                    r={n.r + 26}
-                    fill="url(#sv-gold)"
-                    className={cn(!still && 'sv-fire-halo')}
-                    style={{ animationDelay: at(n.pulseAt), opacity: still ? 0.5 : undefined }}
+                    r={NODE_R + 10}
+                    fill="none"
+                    stroke={T.nodeEdge}
+                    strokeWidth={on ? 1.6 : 1}
+                    className={cn(!still && !on && ARRIVE[n.role])}
+                    style={{
+                      transformOrigin: `${x}px ${y}px`,
+                      opacity: on || still ? 0.9 : undefined,
+                      /* Upper domains are passed first on the ring; the flash comes earlier. */
+                      animationDelay: n.role === 'domain' && !n.late ? '-0.62s' : undefined,
+                    }}
                   />
-                )}
-                {/* Halo ring — lights up as a packet lands (gold for the outcome) */}
-                <circle
-                  cx={x}
-                  cy={y}
-                  r={n.r + 9}
-                  fill="none"
-                  stroke={outcome ? T.gold : T.nodeEdge}
-                  strokeWidth={on ? 1.6 : outcome ? 1.2 : 1}
-                  className={cn(!still && !on && (outcome ? 'sv-fire' : 'sv-pulse'))}
-                  style={{
-                    ...nodeOrigin,
-                    animationDelay: at(n.pulseAt),
-                    opacity: on ? 0.9 : still ? (outcome ? 0.45 : 0.5) : undefined,
-                  }}
-                />
-                <circle cx={x} cy={y} r={n.r} fill={T.nodeFill} stroke={on ? T.flow : T.nodeEdge} strokeWidth={on ? 2 : 1.25} />
-                <n.Icon x={x - 11} y={y - 11} width={22} height={22} color={outcome ? T.gold : T.icon} strokeWidth={1.75} aria-hidden />
-                <text x={x} y={ly} textAnchor="middle" fill={T.label} className="font-mono [font-size:19px] sm:[font-size:12.5px]" style={{ letterSpacing: '0.2em', fontWeight: 500 }}>
+                  <circle cx={x} cy={y} r={NODE_R} fill={T.nodeFill} stroke={T.nodeEdge} strokeWidth={on ? 2 : 1.25} filter={on ? 'url(#sv-glow)' : undefined} />
+                  <n.Icon x={x - 11} y={y - 11} width={22} height={22} color={T.icon} strokeWidth={1.75} aria-hidden />
+                </g>
+                <text x={lx} y={ly} textAnchor={anchor} fill={T.label} className="font-mono [font-size:19px] sm:[font-size:12.5px]" style={{ letterSpacing: '0.2em', fontWeight: 500 }}>
                   {n.label.toUpperCase()}
                 </text>
-                {n.tag && (
-                  <text x={x} y={ly + 16} textAnchor="middle" fill={T.sub} className="hidden font-mono sm:block" style={{ fontSize: 8, letterSpacing: '0.14em' }}>
-                    {n.tag.toUpperCase()}
-                  </text>
-                )}
+                <text x={lx} y={ly + 16} textAnchor={anchor} fill={T.sub} className="hidden font-mono sm:block" style={{ fontSize: 8, letterSpacing: '0.14em' }}>
+                  {n.tag.toUpperCase()}
+                </text>
               </motion.g>
             )
           })}
         </svg>
 
-        {/* Accessible hit areas over the four system nodes */}
+        {/* Accessible hit areas over the four domain nodes */}
         {DOMAINS.map((n) => {
           const d = domains.find((x) => x.id === n.id)!
-          const { x, y } = P[n.id]
+          const { x, y } = POS[n.id]
           return (
             <button
               key={n.id}
@@ -411,7 +363,7 @@ export function SystemVisual({ dark = true, className = 'max-w-[520px]' }: { dar
               onClick={() => setActive((a) => (a === n.id ? null : n.id))}
               aria-label={`${d.label}: ${d.detail}`}
               className="absolute h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full"
-              style={{ left: `${(x / VB.w) * 100}%`, top: `${(y / VB.h) * 100}%` }}
+              style={{ left: `${(x / VB.w) * 100}%`, top: `${((y - VB.y0) / VB.h) * 100}%` }}
             />
           )
         })}
