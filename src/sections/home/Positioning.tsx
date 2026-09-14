@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { positioningV2, domains } from '../../data/company'
 import { Eyebrow } from '../../components/ui/Primitives'
+import { InteractiveCard } from '../../components/ui/InteractiveCard'
 import { fadeUp, stagger, viewportOnce } from '../../animations/variants'
 
 /** Executive positioning. Large type, a short paragraph, and a lot of air. */
@@ -23,12 +24,14 @@ export function Positioning() {
             {positioningV2.statementBody}
           </motion.p>
 
-          <motion.ul variants={fadeUp} className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <motion.ul variants={stagger(0.08)} className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {domains.map((d) => (
-              <li key={d.id} className="panel px-6 py-8">
-                <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-accent-600">{d.label}</span>
+              <InteractiveCard key={d.id} as="li" className="panel px-6 py-8">
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-accent-600 transition-colors duration-300 group-hover/card:text-gold-600">
+                  {d.label}
+                </span>
                 <p className="mt-3 text-[14.5px] leading-[1.6] text-muted">{d.detail}</p>
-              </li>
+              </InteractiveCard>
             ))}
           </motion.ul>
         </motion.div>

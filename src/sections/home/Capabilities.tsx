@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { ArrowRight } from 'lucide-react'
 import { solutions } from '../../data/solutions'
 import { Eyebrow, Explore } from '../../components/ui/Primitives'
+import { InteractiveCard } from '../../components/ui/InteractiveCard'
 import { useIsMobile } from '../../hooks/useMediaQuery'
 import { fadeUp, stagger, viewportOnce } from '../../animations/variants'
 import { cn } from '../../utils/cn'
@@ -38,7 +39,7 @@ export function Capabilities() {
           <ul className="mt-14 divide-y divide-white/25 border-y border-white/25">
             {solutions.map((s) => (
               <li key={s.id}>
-                <Link to={`/solutions/${s.id}`} className="flex items-start justify-between gap-6 py-7">
+                <Link to={`/solutions/${s.id}`} className="group flex items-start justify-between gap-6 py-7 transition-transform duration-300 active:translate-x-1">
                   <span>
                     <span className="font-mono text-[10.5px] tracking-[0.2em] text-white/80">{s.index}</span>
                     <span className="mt-2 block font-display text-[22px] leading-tight text-white">{s.title}</span>
@@ -92,12 +93,14 @@ export function Capabilities() {
             {/* Dynamic panel */}
             <div className="relative lg:sticky lg:top-32 lg:self-start">
               <AnimatePresence mode="wait">
-                <motion.div
+                <InteractiveCard
                   key={active.id}
+                  variants={undefined}
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  tilt={3}
+                  lift={3}
                   className="card-on-accent relative overflow-hidden"
                 >
                   <img
@@ -107,7 +110,7 @@ export function Capabilities() {
                     decoding="async"
                     width={600}
                     height={338}
-                    className="aspect-[16/9] w-full object-cover"
+                    className="aspect-[16/9] w-full object-cover transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover/card:scale-[1.04]"
                   />
                   <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-accent-500/10 blur-3xl" />
                   <div className="relative p-9">
@@ -134,7 +137,7 @@ export function Capabilities() {
                       <Explore to={`/solutions/${active.id}`} />
                     </div>
                   </div>
-                </motion.div>
+                </InteractiveCard>
               </AnimatePresence>
             </div>
           </div>
