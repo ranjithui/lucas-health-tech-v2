@@ -77,8 +77,23 @@ export function Footer() {
           </div>
           <div>
             <span className="block font-mono text-[10.5px] uppercase tracking-[0.2em] text-white/80">Location</span>
-            <a href={company.mapsHref} target="_blank" rel="noreferrer" className="mt-2 block underline-offset-4 transition hover:underline">
-              {company.location}
+            <a
+              href={company.mapsHref}
+              target="_blank"
+              rel="noreferrer"
+              className="group mt-2 flex items-center gap-3 underline-offset-4 transition hover:underline"
+            >
+              {/* Mini map, pinned on Concord. Opens the full map in Google Maps. */}
+              <img
+                src="/images/map-concord-mini.webp"
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width={120}
+                height={80}
+                className="h-14 w-[84px] shrink-0 rounded-lg border border-white/40 object-cover shadow-soft transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.04]"
+              />
+              <span>{company.location}</span>
             </a>
           </div>
           <div>
