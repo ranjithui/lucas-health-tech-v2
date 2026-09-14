@@ -30,6 +30,7 @@ export const founder = {
   quote:
     'Healthcare organizations struggle when clinical systems are fragmented, misaligned, or poorly governed — and when technical leadership doesn’t understand clinical reality. I architect platforms and lead operations where clinical workflows, regulatory requirements, and enterprise scale intersect.',
   linkedin: 'https://www.linkedin.com/in/casi-vician/',
+  photo: '/images/founder-casi-vician-ischay.webp',
 } as const
 
 /** Verified numbers published on lucashealthtech.com */

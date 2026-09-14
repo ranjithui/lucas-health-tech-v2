@@ -21,6 +21,8 @@ export interface Solution {
   proof?: string
   /** Version 1 anchor, preserved so old deep links keep resolving. */
   legacyId?: string
+  /** Editorial photograph in /public/images, 4:3. */
+  image: { src: string; alt: string }
 }
 
 export const audiences: { id: Audience; label: string; description: string }[] = [
@@ -44,6 +46,7 @@ export const audiences: { id: Audience; label: string; description: string }[] =
 export const solutions: Solution[] = [
   {
     id: 'clinical-systems',
+    image: { src: '/images/solution-clinical-systems.webp', alt: 'Clinicians meeting in a modern glass-walled hospital atrium' },
     legacyId: 'clinical-platform-architecture',
     index: '01',
     title: 'Clinical Systems',
@@ -74,6 +77,7 @@ export const solutions: Solution[] = [
   },
   {
     id: 'executive-operations',
+    image: { src: '/images/solution-executive-operations.webp', alt: 'Executive presenting from a podium at a healthcare leadership event' },
     legacyId: 'executive-operating-roles',
     index: '02',
     title: 'Executive Operations',
@@ -104,6 +108,7 @@ export const solutions: Solution[] = [
   },
   {
     id: 'ai-automation',
+    image: { src: '/images/solution-ai-automation.webp', alt: 'Nurse reviewing an AI-assisted clinical dashboard on a tablet' },
     legacyId: 'ai-automation-strategy',
     index: '03',
     title: 'AI & Automation',
@@ -134,6 +139,7 @@ export const solutions: Solution[] = [
   },
   {
     id: 'digital-innovation',
+    image: { src: '/images/solution-digital-innovation.webp', alt: 'Speaker walking an audience through a digital transformation roadmap' },
     legacyId: 'digital-transformation',
     index: '04',
     title: 'Digital Innovation',
@@ -163,6 +169,7 @@ export const solutions: Solution[] = [
   },
   {
     id: 'practice-optimization',
+    image: { src: '/images/solution-practice-optimization.webp', alt: 'Healthcare leadership audience at an operations briefing' },
     index: '05',
     title: 'Practice Optimization',
     fullTitle: 'Practice Optimization',

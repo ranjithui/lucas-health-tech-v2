@@ -20,7 +20,7 @@ const Terms = lazy(() => import('./pages/Legal').then((m) => ({ default: m.Terms
 
 function PageFallback() {
   return (
-    <div className="flex min-h-[70vh] items-center justify-center bg-ink-900" role="status" aria-label="Loading">
+    <div className="flex min-h-[70vh] items-center justify-center bg-paper-100" role="status" aria-label="Loading">
       <span className="h-6 w-6 animate-spin rounded-full border border-accent-500 border-t-transparent" />
     </div>
   )

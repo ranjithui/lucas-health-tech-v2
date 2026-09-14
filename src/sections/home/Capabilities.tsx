@@ -98,10 +98,19 @@ export function Capabilities() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="card-on-accent relative overflow-hidden p-9"
+                  className="card-on-accent relative overflow-hidden"
                 >
+                  <img
+                    src={active.image.src}
+                    alt={active.image.alt}
+                    loading="lazy"
+                    decoding="async"
+                    width={600}
+                    height={338}
+                    className="aspect-[16/9] w-full object-cover"
+                  />
                   <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-accent-500/10 blur-3xl" />
-                  <div className="relative">
+                  <div className="relative p-9">
                     <span className="font-display text-[64px] leading-none text-text/[0.10]">{active.index}</span>
                     <h3 className="-mt-8 font-display text-2xl text-text">{active.fullTitle}</h3>
                     <p className="mt-4 text-[15.5px] leading-[1.6] text-muted">{active.short}</p>

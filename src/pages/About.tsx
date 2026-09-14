@@ -35,6 +35,16 @@ export default function About() {
       <Section>
         <div className="container-x grid gap-16 lg:grid-cols-[1fr_1.25fr] lg:gap-24">
           <motion.div variants={stagger(0.08)} initial="hidden" whileInView="show" viewport={viewportOnce}>
+            <motion.div variants={fadeUp} className="mb-10 max-w-xs overflow-hidden rounded-3xl border border-paper-300/70 bg-paper-200 shadow-soft">
+              <img
+                src={founder.photo}
+                alt={`${founder.name}, ${founder.role} of ${company.name}`}
+                width={292}
+                height={366}
+                decoding="async"
+                className="aspect-[4/5] w-full object-cover"
+              />
+            </motion.div>
             <motion.div variants={fadeUp}>
               <Eyebrow>Leadership</Eyebrow>
             </motion.div>
@@ -96,7 +106,25 @@ export default function About() {
               Engagements have spanned Ohio, Wisconsin, North Carolina, and national-scale enterprise programs.
             </p>
           </div>
-          <dl className="grid gap-4 self-start sm:grid-cols-3 lg:grid-cols-1">
+          <div className="grid gap-4 self-start">
+          <a
+            href={company.mapsHref}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open Concord, Ohio in Google Maps"
+            className="panel panel-link block overflow-hidden"
+          >
+            <img
+              src="/images/map-concord-ohio.webp"
+              alt="Map of Concord, Ohio, where Lucas Health Tech is based"
+              loading="lazy"
+              decoding="async"
+              width={614}
+              height={384}
+              className="aspect-[16/10] w-full object-cover"
+            />
+          </a>
+          <dl className="grid gap-4 self-start sm:grid-cols-3">
             {[
               { label: 'Address', value: company.location, href: company.mapsHref },
               { label: 'Phone', value: company.phone, href: company.phoneHref },
@@ -116,6 +144,7 @@ export default function About() {
               </div>
             ))}
           </dl>
+          </div>
         </div>
       </Section>
 

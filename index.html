@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#f5f7fa" />
+    <!-- Ground color before the stylesheet arrives, so neither theme flashes the other. -->
+    <style>
+      html { background: #f5f7fa; color-scheme: light; }
+      html.dark { background: #04081c; color-scheme: dark; }
+    </style>
     <script>
       /* Paint the stored theme before first render so there is no flash of the
          wrong ground. Key and default must match src/hooks/useTheme.ts. */

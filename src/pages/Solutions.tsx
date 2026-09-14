@@ -41,9 +41,21 @@ export default function Solutions() {
               <motion.li key={s.id} variants={fadeUp} className="border-b border-paper-300">
                 <Link
                   to={`/solutions/${s.id}`}
-                  className="group grid gap-6 py-12 transition-colors duration-500 md:grid-cols-[100px_1fr_auto] md:items-start md:gap-10 md:py-16"
+                  className="group grid gap-6 py-12 transition-colors duration-500 md:grid-cols-[100px_1fr_auto] md:items-start md:gap-10 md:py-16 lg:grid-cols-[100px_260px_1fr_auto]"
                 >
                   <span className="font-mono text-[11px] tracking-[0.2em] text-accent-600">{s.index}</span>
+
+                  <span className="block overflow-hidden rounded-2xl border border-paper-300/70 bg-paper-200 md:col-span-2 lg:col-span-1">
+                    <img
+                      src={s.image.src}
+                      alt={s.image.alt}
+                      loading="lazy"
+                      decoding="async"
+                      width={600}
+                      height={450}
+                      className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.03]"
+                    />
+                  </span>
 
                   <div className="max-w-2xl">
                     <h2 className="display-md text-text transition-colors duration-300 group-hover:text-accent-700">{s.fullTitle}</h2>
